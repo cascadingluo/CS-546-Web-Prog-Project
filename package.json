@@ -1,0 +1,24 @@
+{
+  "name": "cs-546-web-prog-project",
+  "version": "1.0.0",
+  "description": "Planet Simulation",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascadingluo/CS-546-Web-Prog-Project.git"
+  },
+  "author": "CS 546 TEAM - Luo Xu, Nicolas Banatt, Annanya Jain, Gursimran Vasir, Zachary Rosario.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cascadingluo/CS-546-Web-Prog-Project/issues"
+  },
+  "homepage": "https://github.com/cascadingluo/CS-546-Web-Prog-Project#readme",
+  "dependencies": {
+    "mongodb": "^6.15.0"
+  }
+}
