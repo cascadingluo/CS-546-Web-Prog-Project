@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/cascadingluo/CS-546-Web-Prog-Project#readme",
   "dependencies": {
+    "express": "^5.1.0",
+    "matter-js": "^0.20.0",
     "mongodb": "^6.15.0"
   }
 }
