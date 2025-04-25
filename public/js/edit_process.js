@@ -7,7 +7,6 @@ let massInput = document.getElementById('mass');
 let radiusInput = document.getElementById('radius');
 let modeInputs = document.getElementsByName('mode');
 let velocityInput = document.getElementById('velocity');
-let velDirInput = document.getElementById('vel-dir');
 let colorInput = document.getElementById('planet-color');
 let densityInput = document.getElementById('density');
 let shapeInput = document.getElementById('shape');
@@ -27,7 +26,6 @@ if (form) {
         const radius = radiusInput.value.trim();
         const mode = Array.from(modeInputs).find(input => input.checked).value;
         const velocity = velocityInput.value.trim();
-        const velDir = velDirInput.value.trim();
         const density = densityInput.value.trim();
         const shape = shapeInput.value;
         const color = colorInput.value;
@@ -71,12 +69,6 @@ if (form) {
         if (!velocity) {
             error.hidden = false;
             error.innerHTML = 'planet cannot have no velocity';
-            return;
-        }
-
-        if (!velDir) {
-            error.hidden = false;
-            error.innerHTML = 'planet cannot have no velocity direction';
             return;
         }
 
