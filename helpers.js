@@ -175,4 +175,3 @@ const exportedMethods = {
 };
 
 export default exportedMethods;
-

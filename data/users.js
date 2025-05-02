@@ -1,4 +1,4 @@
-import {sandboxes, users} from '../config/mongoCollections.js';
+import {users} from '../config/mongoCollections.js';
 import {ObjectId, ReturnDocument} from 'mongodb';
 import helper from '../helpers.js'
 import bcrypt from 'bcrypt';
@@ -42,7 +42,8 @@ export const register = async (
   
     const insertInfo = await usersCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add user';
-    return { signupCompleted: true, userName: insertInfo.insertedId };
+
+    return { signupCompleted: true, user: newUser};
   };
   
   export const login = async (userName, password) => {
@@ -63,15 +64,13 @@ export const register = async (
     let check_password = await bcrypt.compare(password, fetch_User.password);
     if(!check_password)
       throw `Either the userName or password is invalid`;
-  
-    let user = updated_user.value;
 
     return {
-      _id : user._id.toString(),
-      userName: user.userName,
-      email: user.email,
-      age: user.age,
-      sandboxes: user.sandboxes.map((id) => id.toString())
+      _id : fetch_User._id.toString(),
+      userName: fetch_User.userName,
+      email: fetch_User.email,
+      age: fetch_User.age,
+      sandboxes: fetch_User.sandboxes.map((id) => id.toString())
     };
   };
 
@@ -102,8 +101,8 @@ export const register = async (
       if(Array.isArray(user.sandboxes)){
        user.sandboxes = user.sandboxes.map(sandboxId => sandboxId.toString());
       }
-      const {password, ...otherDetails} = user_details;
+      const {password, ...otherDetails} = user;
       return otherDetails;
   };
 
-  
+export default {register, login, getAllUsers, getUserById}
