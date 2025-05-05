@@ -29,14 +29,14 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     
     const updated_user_sandbox = await usersCollection.findOneAndUpdate(
         {_id: new ObjectId(userId)},
-        {$push: {sandboxes: sandboxId.toString()}},
+        {$push: {sandboxes: sandboxId}},
         {returnDocument: "after"}
     );
 
     return {updated_user_sandbox: updated_user_sandbox, sandboxId: sandboxId.toString()};
   };
 
-  export const CreatePlanetInSandbox = async (sandboxId, planet_object, name) => {
+  export const createPlanetInSandbox = async (sandboxId, planet_object, name) => {
     if (!ObjectId.isValid(sandboxId)) {
         throw 'Error: Invalid Sandbox Id';
     }
@@ -53,6 +53,7 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     if (!hexaPattern.test(color))
         throw `Error: ${color} is an invalid hex color code`; 
 
+    // I need to check the frontend fields to see exactly what the planet object looks like and what we are passing into the backend
     let new_planet = {
         _id: new ObjectId(),
         name,
@@ -104,8 +105,35 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     return sandbox_docs.map(sand_box =>({
         ...sand_box,
         _id: sand_box._id.toString(),
-        planets: sand_box.planets
+        planets: sand_box.planets.map(planet => ({
+            ...planet,
+            _id: planet._id.toString()
+        }))
     }));
+  };
+
+  export const getSandboxesById = async (sandboxId) => {
+    if (!ObjectId.isValid(sandboxId)) {
+        throw 'Error: Invalid sandbox Id';
+    }
+
+    const sandboxesCollection = await sandboxes();
+    const sandbox = await sandboxesCollection.findOne({
+        _id: new ObjectId(sandboxId),
+    });
+
+    if (!sandbox) {
+        throw `Error: No sandbox found with sandbox id ${sandboxId}`;
+    }
+
+    return {
+        ...sandbox,
+        _id: sandbox._id.toString(),
+        planets: sandbox.planets.map(planet => ({
+            ...planet,
+            _id: planet._id.toString()
+        }))
+    };
   };
 
   export const removeSandbox = async (userId, sandboxId) => {
@@ -141,4 +169,4 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     return updated_user;
   };
 
-export default {createSandboxForUser, CreatePlanetInSandbox, getSandboxesbyUserId, removeSandbox}
+export default {createSandboxForUser, createPlanetInSandbox, getSandboxesbyUserId, removeSandbox, getSandboxesById}

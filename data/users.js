@@ -1,5 +1,5 @@
 import {users} from '../config/mongoCollections.js';
-import {ObjectId, ReturnDocument} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import helper from '../helpers.js'
 import bcrypt from 'bcrypt';
 
@@ -27,7 +27,7 @@ export const register = async (
     });
     
     if(does_userId_exist)
-      throw `Error:  User with this ${userId} or ${email} already exists.`;
+      throw `Error:  User with this ${userName} or ${email} already exists.`;
   
     let hash_pass = await bcrypt.hash(password, saltRounds);
   
@@ -43,7 +43,15 @@ export const register = async (
     const insertInfo = await usersCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add user';
 
-    return { signupCompleted: true, user: newUser};
+    return { signupCompleted: true, 
+      user: {
+        _id: newUser._id.toString(),
+        userName: newUser.userName,
+        email: newUser.email,
+        age: newUser.age,
+        sandboxes: []
+      }
+    };
   };
   
   export const login = async (userName, password) => {
@@ -78,31 +86,33 @@ export const register = async (
     const usersCollection = await users();
       let userList = await usersCollection.find({}).toArray();
       if(!userList) throw 'Could not get all users';
-      userList = userList.map((user) => {
-        user._id = user._id.toString();
-        return {_id: user._id, userName: user.userName, email:user.email};
-      });
       
-      return userList;
+      return userList.map(user => ({
+        _id: user._id.toString(),
+        userName: user.userName, 
+        email: user.email
+      }));
   };
 
   export const getUserById = async(userId) => {
     if (!userId) throw 'You must provide an id to search for';
-      if (typeof userId !== 'string') throw 'Id must be a string';
-      if(userId.trim().length === 0)
-          throw 'Id cannot be an empty string or just spaces';
-      userId = userId.trim();
-      if(!ObjectId.isValid(userId)) throw 'Invalid object Id';
+    if (typeof userId !== 'string') throw 'Id must be a string';
+    if(userId.trim().length === 0)
+        throw 'Id cannot be an empty string or just spaces';
+    userId = userId.trim();
+    if(!ObjectId.isValid(userId)) throw 'Invalid object Id';
 
-      const usersCollection = await users();
-      const user = await usersCollection.findOne({_id: new ObjectId(userId)});
-      if (!user) throw 'No user with that id';
-      user._id = user._id.toString();
-      if(Array.isArray(user.sandboxes)){
-       user.sandboxes = user.sandboxes.map(sandboxId => sandboxId.toString());
-      }
-      const {password, ...otherDetails} = user;
-      return otherDetails;
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({_id: new ObjectId(userId)});
+    if (!user) throw 'No user with that id';
+
+    return {
+      _id : user._id.toString(),
+      userName: user.userName,
+      email: user.email,
+      age: user.age,
+      sandboxes: user.sandboxes.map((id) => id.toString())
+    };
   };
 
 export default {register, login, getAllUsers, getUserById}
