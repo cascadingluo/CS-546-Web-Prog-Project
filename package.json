@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/cascadingluo/CS-546-Web-Prog-Project#readme",
   "dependencies": {
-    "mongodb": "^6.15.0"
+    "mongodb": "^6.15.0",
+    "validator": "^13.15.0"
   }
 }
