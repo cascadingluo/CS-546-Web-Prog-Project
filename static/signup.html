@@ -10,8 +10,8 @@
     <!-- header sections -->
     <header>
         <nav>
-            <button>use as guest</button>
-            <button>sign up</button>
+            <button id="use_guest">use as guest</button>
+            <button id="sign-up-but">sign up</button>
         </nav>
     </header>
     <!-- main sign up form container -->
@@ -30,14 +30,14 @@
                 <input type="password" id="rep_pass" name="rep_pass">
 
                 <label for="age">age</label>
-                <input type="number" id="age" name="age" min="13" max="101">
+                <input type="number" id="age" name="age" min="1" max="101">
 
                 <p id="error" hidden></p> 
                 <!-- shows below the password and checks for empty and exists -->
 
                 <div>
-                    <button type="button">back to home</button>
-                    <button type="submit">log in</button>
+                    <button type="button" id="back_to_home">back to home</button>
+                    <button type="submit" id="login_but">log in</button>
                 </div>
 
             </form>

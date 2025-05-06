@@ -1,18 +1,29 @@
 // DOM setup
 let form = document.getElementById('editing_form');
 let nameInput = document.getElementById('create-sandbox-name');
+let planetInput = document.getElementById('create-planet-name');
 let xInput = document.getElementById('x-axis');
 let yInput = document.getElementById('y-axis');
 let massInput = document.getElementById('mass');
 let radiusInput = document.getElementById('radius');
 let modeInputs = document.getElementsByName('mode');
-let velocityInput = document.getElementById('velocity');
+let massValue = document.getElementById('mass-value');
+let radiusValue = document.getElementById('radius-value');
+// let velocityInput = document.getElementById('velocity');
 let colorInput = document.getElementById('planet-color');
-let densityInput = document.getElementById('density');
-let shapeInput = document.getElementById('shape');
+// let densityInput = document.getElementById('density');
+// let shapeInput = document.getElementById('shape');
 let error = document.getElementById('error');
 
 if (form) {
+    massInput.addEventListener('input', () => {
+        massValue.textContent = massInput.value;
+    });
+
+    radiusInput.addEventListener('input', () => {
+        radiusValue.textContent = radiusInput.value;
+    });
+
     form.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -20,14 +31,15 @@ if (form) {
         error.innerHTML = '';
 
         const name = nameInput.value.trim();
+        const planet = planetInput.value.trim();
         const x = xInput.value.trim();
         const y = yInput.value.trim();
         const mass = massInput.value.trim();
         const radius = radiusInput.value.trim();
         const mode = Array.from(modeInputs).find(input => input.checked).value;
-        const velocity = velocityInput.value.trim();
-        const density = densityInput.value.trim();
-        const shape = shapeInput.value;
+        // const velocity = velocityInput.value.trim();
+        // const density = densityInput.value.trim();
+        // const shape = shapeInput.value;
         const color = colorInput.value;
 
         if (!name) {
@@ -36,15 +48,21 @@ if (form) {
             return;
         }
 
-        if (!x) {
+        if (!planet) {
             error.hidden = false;
-            error.innerHTML = 'the planet must have an x-axis';
+            error.innerHTML = 'planet name is required';
             return;
         }
 
-        if (!y) {
+        if (!x || isNaN(x)) {
             error.hidden = false;
-            error.innerHTML = 'the planet must have an y-axis';
+            error.innerHTML = 'the planet must have an number x-axis';
+            return;
+        }
+
+        if (!y || isNaN(y)) {
+            error.hidden = false;
+            error.innerHTML = 'the planet must have an number y-axis';
             return;
         }
 
@@ -66,23 +84,23 @@ if (form) {
             return;
         }
 
-        if (!velocity) {
-            error.hidden = false;
-            error.innerHTML = 'planet cannot have no velocity';
-            return;
-        }
+        // if (!velocity) {
+        //     error.hidden = false;
+        //     error.innerHTML = 'planet cannot have no velocity';
+        //     return;
+        // }
 
-        if(!density || (density <= 0)) {
-            error.hidden = false;
-            error.innerHTML = 'the planet cannot have no density or 0 or negative density';
-            return;
-        }
+        // if(!density || (density <= 0)) {
+        //     error.hidden = false;
+        //     error.innerHTML = 'the planet cannot have no density or 0 or negative density';
+        //     return;
+        // }
 
-        if (!shape || (shape !== 'circle' && shape !== 'oval')) {
-            error.hidden = false;
-            error.innerHTML = 'the planet must be static or dynamic';
-            return;
-        }
+        // if (!shape || (shape !== 'circle' && shape !== 'oval')) {
+        //     error.hidden = false;
+        //     error.innerHTML = 'the planet must be static or dynamic';
+        //     return;
+        // }
 
         if (!color) {
             error.hidden = false;

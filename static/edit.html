@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>log in to cosmic canvas</title>
+    <title>sandbox name</title>
     <link rel="stylesheet" href="../public/css/styles.css">
 </head>
 
@@ -10,63 +10,83 @@
     <!-- header sections -->
     <header>
         <nav>
-            <button>home page</button>
+            <button id="home-page">home page</button>
         </nav>
     </header>
     <!-- main sign up form container -->
     <main>
         <section id="editing-page">
-            <section id="planet-list-section">
-                <h2>Planet List</h2>
-                <ul id="planet-list">
-                    <!-- the dynamic list would be here once implemented -->
-                </ul>
-            </section>            
+            <div id="main-canvas">
+                <div id="sandbox-name">
+                    <div class="name-row">
+                        <label for="create-sandbox-name">Name of the Sandbox:</label>
+                        <input type="text" id="create-sandbox-name" name="create-sandbox-name"> 
+                    </div>
+                </div>
+                <div id="canvas">
+                    <!-- sandox canvas will be here -->
+                    SANDBOX<br>CANVAS
+                </div>
+            </div>            
             <form id="editing_form">
-                <label for="sandbox-name">Name:</label>
-                <input type="text" id="create-sandbox-name" name="create-sandbox-name"> 
-
-                <p id="error" hidden></p> 
                 
-                <label for="location">Location:</label>
+                <!-- <label for="location">Location:</label>
                 <label for="x">
                     <input type="range" id="x-axis" name="x-axis" min="-200" max="200">
                 </label>
                 <label for="y">
                     <input type="range" id="y-axis" name="y-axis" min="-200" max="200">
-                </label>
+                </label> -->
+                <fieldset id="planet">
+                    <label for="planet-name">Planet Name:</label>
+                    <input type="text" id="create-planet-name" name="create-planet-name"> 
+                    <br>
 
-                <label for="mass">Mass:</label>
-                <input type="range" id="mass" name="mass" max="20" min="0">
+                    <label for="mass">Mass: <span id="mass-value">10</span></label>
+                    <input type="range" id="mass" name="mass" max="20" min="0">
+                    <br>
 
-                <label for="radius">Radius:</label>
-                <input type="range" id="radius" name="radius" min="0" max="20">
+                    <label for="radius">Radius: <span id="radius-value">10</span></label>
+                    <input type="range" id="radius" name="radius" min="0" max="20">
+                    <br>
 
-                <label for="static">
-                    Static
-                    <input type="radio" name="mode" id="mode" value="static" checked>
-                </label>
-                <label for="static">
-                    Dynamic 
-                    <input type="radio" name="mode" id="mode" value="dynamic">
-                </label>
+                    <label for="velocity">Velocity:</label>
+                    <br>
+                    <label for="x">x-axis</label>
+                    <input type="number" id="x-axis" name="x-axis">
+                    <br>
+                    <label for="y">y-axis</label>
+                    <input type="number" id="y-axis" name="y-axis">
+                    <br>
 
-                <label for="velocity">Starting Velocity:</label>
-                <input type="range" id="velocity" name="velocity" min="-200" max="200">
+                    <label for="static">
+                        Static
+                        <input type="radio" name="mode" id="mode" value="static" checked>
+                    </label>
+                    <label for="static">
+                        Dynamic 
+                        <input type="radio" name="mode" id="mode" value="dynamic">
+                    </label>
+                    <br>
 
-                <label for="planet-color">Color:</label>
-                <input type="color" id="planet-color" name="planet-color">
+                    <label for="planet-color">Color:</label>
+                    <input type="color" id="planet-color" name="planet-color">
 
-                <label for="density">Density:</label>
-                <input type="number" id="density" name="density">
+                    <!-- <label for="density">Density:</label>
+                    <input type="number" id="density" name="density"> -->
 
-                <label for="shape">Shape:</label>
-                <select name="shape" id="shape">
-                    <option value="circle"> Circle </option>
-                    <option value="oval"> Oval </option>
-                </select>  
-
-                <button type="submit">Save Changes</button>
+                    <!-- <label for="shape">Shape:</label>
+                    <select name="shape" id="shape">
+                        <option value="circle"> Circle </option>
+                        <option value="oval"> Oval </option>
+                    </select>   -->
+                    <div id="saveview">
+                        <button type="submit" id="save">Save</button>
+                        <button type="submit" id="view">View</button>
+                    </div>
+                    <p id="error" hidden></p> 
+                </fieldset>
+                
             </form>
         </section>
     </main>
