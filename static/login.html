@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>log in to cosmic canvas</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+
+<body>
+    <!-- header sections -->
+    <header>
+        <nav>
+            <button>use as guest</button>
+            <button>sign up</button>
+        </nav>
+    </header>
+    <!-- main login form container -->
+    <main>
+        <section id="login-box">
+            <h1> log in </h1>
+            <form id="login_form">
+
+                <label for="username">username</label>
+                <input type="text" id="login_username" name="login_username">
+
+                <label for="password">password</label>
+                <input type="password" id="login_password" name="login_password">
+
+                <p id="error" hidden></p> 
+
+                <div>
+                    <button type="button">back to home</button>
+                    <button type="submit">log in</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="../public/js/login_process.js"></script>
+</body>
