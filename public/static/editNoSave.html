@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>log in to cosmic canvas</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+
+<body>
+    <!-- header sections -->
+    <header>
+        <nav>
+            <a hrf = "index.html">
+                <button>home page</button>
+            </a>
+        </nav>
+    </header>
+    <!-- main sign up form container -->
+    <main>
+        <section id="editing-page">
+            <section id="planet-list-section">
+                <h2>Planet List</h2>
+                <ul id="planet-list">
+                    <!-- the dynamic list would be here once implemented -->
+                </ul>
+            </section>            
+            <form id="editing_form">
+                <label for="sandbox-name">Name:</label>
+                <input type="text" id="create-sandbox-name" name="create-sandbox-name"> 
+
+                <p id="error" hidden></p> 
+                
+                <label for="location">Location:</label>
+                <label for="x">
+                    <input type="range" id="x-axis" name="x-axis" min="-200" max="200">
+                </label>
+                <label for="y">
+                    <input type="range" id="y-axis" name="y-axis" min="-200" max="200">
+                </label>
+
+                <label for="mass">Mass:</label>
+                <input type="range" id="mass" name="mass" max="20" min="0">
+
+                <label for="radius">Radius:</label>
+                <input type="range" id="radius" name="radius" min="0" max="20">
+
+                <label for="static">
+                    Static
+                    <input type="radio" name="mode" id="mode" value="static" checked>
+                </label>
+                <label for="static">
+                    Dynamic 
+                    <input type="radio" name="mode" id="mode" value="dynamic">
+                </label>
+
+                <label for="velocity">Starting Velocity:</label>
+                <input type="range" id="velocity" name="velocity" min="-200" max="200">
+
+                <label for="planet-color">Color:</label>
+                <input type="color" id="planet-color" name="planet-color">
+
+                <label for="density">Density:</label>
+                <input type="number" id="density" name="density">
+
+                <label for="shape">Shape:</label>
+                <select name="shape" id="shape">
+                    <option value="circle"> Circle </option>
+                    <option value="oval"> Oval </option>
+                </select>  
+            </form>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="../public/js/edit_process.js"></script>
+</body>
