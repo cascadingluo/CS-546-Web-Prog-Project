@@ -1,0 +1,281 @@
+/* default */
+body {
+    background-color: #110022;   
+    color: #FFFFFF;
+    font-family: sans-serif;
+}
+
+header {
+    margin: 20px;
+}
+
+#use_guest, #sign-up-but {
+    margin-left: 3%;
+    padding: 1% 2%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    border-radius: 2%;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3C1478;
+}
+
+button::after {
+    background-color: #BCC8FA;
+}
+
+#error {
+    color: red;
+    font-size: 90%;
+    margin-top: 2%;
+}
+/*////////////////////////////////////////*/
+
+/* user landing */
+
+/*////////////////////////////////////////*/
+
+/* guest landing */
+
+/*////////////////////////////////////////*/
+
+/* login */
+#login-box {
+    border: 2px solid #FFFD93;
+    border-radius: 20px;
+    padding: 4%;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+#login-box label {
+    display: block;
+    text-align: left;
+    font-size: 100%;
+    margin-bottom: -5%;
+    margin-top: 4%;
+    margin-left: -2%;
+}
+
+#login_form input[type="text"], 
+#login_form input[type="password"], 
+#login_form input[type="number"] {
+    border: 2px solid #FFFD93;
+    color: white;
+    background-color: transparent;
+    width: 60%;
+    padding: 2%;
+    margin-bottom: 3%;
+}
+
+#back_to_home, #login_but {
+    margin-left: 3%;
+    padding: 1% 2%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    border-radius: 2%;
+    cursor: pointer;
+}
+/*////////////////////////////////////////*/
+
+/* sign up */
+#signup-box {
+    border: 2px solid #FFFD93;
+    border-radius: 20px;
+    padding: 4%;
+    padding-left: 7%;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+#signup-box label {
+    display: block;
+    text-align: left;
+    font-size: 100%;
+    margin-bottom: -6%;
+    margin-top: 4%;
+    margin-left: -6.5%;
+}
+
+#signup_form input[type="text"],
+#signup_form input[type="password"],
+#signup_form input[type="number"]  {
+    width: 64%;
+    height: 20%;
+    margin-top: 1%;
+    margin-bottom: 4%;
+    padding: 1%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    height: 30px;
+}
+
+
+/*////////////////////////////////////////*/
+
+/* sandbox landing */
+
+/*////////////////////////////////////////*/
+
+/* sandbox editing */
+#home-page {
+    margin-left: 3%;
+    padding: 1% 2%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    border-radius: 2%;
+    cursor: pointer;
+}
+
+#editing-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+    padding-top: 0%;
+    gap: 1%;
+    height: 85vh;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* left */
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.name-row label {
+    white-space: nowrap;
+    min-width: 50px;
+}
+
+.name-row input[type="text"] {
+    flex: 1;
+    padding: 1%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    box-sizing: border-box;
+}
+
+#create-sandbox-name {
+    width: 100%;
+    padding: 1%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    box-sizing: border-box;
+}
+
+#main-canvas {
+    display: flex;
+    flex-direction: column;
+    width: 84%;
+    gap: 10px;
+}
+
+#canvas {
+    width: 100%;
+    height: 100%; 
+    border: 2px solid #FFFD93;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 180%;
+    text-align: center;
+}
+
+/* right */
+#editing_form {
+    width: 15%;
+    border: 2px solid #FFFD93;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#planet {
+    border: transparent;
+}
+
+#editing_form label {
+    margin-top: 4%;
+    font-size: 90%;
+}
+
+#editing_form input[type="text"],
+#editing_form input[type="range"],
+#editing_form input[type="number"],
+#editing_form input[type="color"] {
+    width: 100%;
+    height: 20%;
+    margin-top: 1%;
+    margin-bottom: 4%;
+    padding: 1%;
+    background: transparent;
+    border: 2px solid #FFFD93;
+    color: white;
+    height: 30px;
+}
+
+#editing_form input[type="radio"] {
+    margin-left: 4%;
+}
+
+#editing_form button {
+    width: 48%;
+    padding: 2%;
+    border: 2px solid #FFFD93;
+    background: transparent;
+    color: white;
+    margin-top: 5%;
+    cursor: pointer;
+}
+
+#saveview {
+    display: flex;
+    justify-content: space-between;
+    gap: 4%;
+    margin-top: 4%;
+    text-align: center;
+}
+
+#save {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+}
+
+#view {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+}
+
+/*////////////////////////////////////////*/
+
+/* sandbox viewing */
+
+/*////////////////////////////////////////*/
