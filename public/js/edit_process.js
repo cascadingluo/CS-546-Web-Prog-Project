@@ -8,8 +8,6 @@ let radiusInput = document.getElementById('radius');
 let modeInputs = document.getElementsByName('mode');
 let velocityInput = document.getElementById('velocity');
 let colorInput = document.getElementById('planet-color');
-let densityInput = document.getElementById('density');
-let shapeInput = document.getElementById('shape');
 let error = document.getElementById('error');
 
 if (form) {
@@ -26,8 +24,6 @@ if (form) {
         const radius = radiusInput.value.trim();
         const mode = Array.from(modeInputs).find(input => input.checked).value;
         const velocity = velocityInput.value.trim();
-        const density = densityInput.value.trim();
-        const shape = shapeInput.value;
         const color = colorInput.value;
 
         if (!name) {
@@ -69,18 +65,6 @@ if (form) {
         if (!velocity) {
             error.hidden = false;
             error.innerHTML = 'planet cannot have no velocity';
-            return;
-        }
-
-        if(!density || (density <= 0)) {
-            error.hidden = false;
-            error.innerHTML = 'the planet cannot have no density or 0 or negative density';
-            return;
-        }
-
-        if (!shape || (shape !== 'circle' && shape !== 'oval')) {
-            error.hidden = false;
-            error.innerHTML = 'the planet must be static or dynamic';
             return;
         }
 

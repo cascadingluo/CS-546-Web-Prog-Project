@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
     const planets = [
-        createPlanet("Sun", centerX, centerY, 1000, sunRadius, {x: 0, y: 0}, true, "#FFFF00")
+        createPlanet("Sun", centerX, centerY, sunMass, sunRadius, {x: 0, y: 0}, true, "#FFFF00")
     ];
 
     World.add(world, planets);
