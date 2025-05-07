@@ -27,50 +27,42 @@ if (form) {
     const color = colorInput.value.trim();
 
     if (!name) {
-      error.hidden = false;
-      error.innerHTML = "sandbox name is required";
+      showError("sandbox name is required");
       return;
     }
 
     if (!x) {
-      error.hidden = false;
-      error.innerHTML = "the planet must have an x-axis";
+      showError("the planet must have an x-axis");
       return;
     }
 
     if (!y) {
-      error.hidden = false;
-      error.innerHTML = "the planet must have an y-axis";
+      showError("the planet must have an y-axis");
       return;
     }
 
     if (!mass || mass < 0) {
-      error.hidden = false;
-      error.innerHTML = "planet cannot have less than or equal to 0 mass";
+      showError("planet cannot have less than or equal to 0 mass");
       return;
     }
 
     if (!radius || radius <= 0) {
-      error.hidden = false;
-      error.innerHTML = "planet cannot have less than or equal to 0 radius";
+      showError("planet cannot have less than or equal to 0 radius");
       return;
     }
 
     if (!mode || (mode !== "static" && mode !== "dynamic")) {
-      error.hidden = false;
-      error.innerHTML = "the planet must be static or dynamic";
+      showError("the planet must be static or dynamic");
       return;
     }
 
     if (!velocity) {
-      error.hidden = false;
-      error.innerHTML = "planet cannot have no velocity";
+      showError("planet cannot have no velocity");
       return;
     }
 
     if (!color) {
-      error.hidden = false;
-      error.innerHTML = "the planet must have a color";
+      showError("the planet must have a color");
       return;
     }
   });
