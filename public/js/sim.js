@@ -13,13 +13,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const { world } = engine;
     engine.gravity.scale = 0; //zero gravity
 
+    const canvas = document.getElementById('canvas');
+
     //https://brm.io/matter-js/docs/classes/Render.html#property_canvas
+    //https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth
     const render = Render.create({
-        element: document.body,
+        element: canvas,
         engine: engine,
         options: {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: canvas.offsetWidth,
+            height: canvas.offsetHeight,
             wireframes: false,
             background: '#000',
         }
@@ -28,8 +31,8 @@ window.addEventListener('DOMContentLoaded', () => {
     //FOR TESTING ONLY, CHANGE LATER
     const sunMass = 1000;
     const sunRadius = 30;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+    const centerX = canvas.offsetWidth / 2;
+    const centerY = canvas.offsetHeight / 2;
     const planets = [
         createPlanet("Sun", centerX, centerY, sunMass, sunRadius, {x: 0, y: 0}, true, "#FFFF00")
     ];
