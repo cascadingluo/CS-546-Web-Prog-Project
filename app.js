@@ -7,6 +7,11 @@ import configRoutes from './routes/index.js';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/static', (req, res, next) => {  
+  res.sendStatus(404);
+});
+
 app.use(express.static('public'));
 
 
@@ -15,10 +20,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-
-app.use('/static', (req, res, next) => {  
-  res.redirect('/');
-});
 
 configRoutes(app);
 
