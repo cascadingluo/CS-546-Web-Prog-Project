@@ -1,8 +1,6 @@
 // DOM setup
 let form = document.getElementById('editing_form');
 let nameInput = document.getElementById('create-sandbox-name');
-let xInput = document.getElementById('x-axis');
-let yInput = document.getElementById('y-axis');
 let massInput = document.getElementById('mass');
 let radiusInput = document.getElementById('radius');
 let modeInputs = document.getElementsByName('mode');
@@ -18,8 +16,6 @@ if (form) {
         error.innerHTML = '';
 
         const name = nameInput.value.trim();
-        const x = xInput.value.trim();
-        const y = yInput.value.trim();
         const mass = massInput.value.trim();
         const radius = radiusInput.value.trim();
         const mode = Array.from(modeInputs).find(input => input.checked).value;
@@ -74,6 +70,8 @@ if (form) {
             return;
         }
 
+        //SAVE THE SANDBOX
+        
     });
 }
 

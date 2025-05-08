@@ -64,7 +64,7 @@ router.route('/login')
 // when submit shoudl be redirected to signed in index if correct created 
 router.route('/signup')
   .get(async (req, res) => {
-    if (req.session.user && req.session.user.signedIn === false) {
+    if (!req.session.user || req.session.user.signedIn === false) {
       res.sendFile(path.resolve(__dirname, '../public/static/signup.html'));
     } else {
       res.redirect('/');
@@ -102,11 +102,11 @@ router.route('/signup')
 
 //can onyl view gallery if signed in
 router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
-  if (req.session.user && req.session.user.signedIn === true) {
-    res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
-  } else {
-    res.redirect('/');
-  }
+    if (req.session.user && req.session.user.signedIn === true) {
+      res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
+    } else {
+      res.redirect('/');
+    }
 });
 
 //   this version should have save
@@ -115,6 +115,8 @@ router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
 router.route('/edit')
   .get(async (req, res) => {
     if (req.session.user && req.session.user.signedIn === true) {
+      //make a new sandbox
+      //route them to that /edit/{sandboxId}
       res.sendFile(path.resolve(__dirname, '../public/static/edit.html'));
     } else {
       res.sendFile(path.resolve(__dirname, '../public/static/editNoSave.html'));
@@ -134,12 +136,19 @@ router.route('/edit')
     }
   });
 
+  router.route('/edit/:SandboxId')
+  .get(async (req, res) => {
+    //load the planets <-- Zach will do this
+    //load the page
+  });
+
+
 router.route('/logout').get(async (req, res) => {
   req.session.user = null; 
   res.redirect('/');
 });
 
-router.route('/sandbox/:SandboxId')
+router.route('/view/:SandboxId')
   .get(async (req, res) => {
     // TO DO: SAND BOXES MUST BE LOADED FIRST
     if (req.session.user && req.session.user.signedIn === true) {
