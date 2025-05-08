@@ -66,6 +66,8 @@ if (form) {
       return;
     }
   });
+
+  //HERE IS WHERE WE WILL CALL THE SAVE SANDBOX FUNCTION RESIDING IN SIM.JS
 }
 
 function showError(message) {

@@ -1,4 +1,5 @@
-// DOM setup
+// // DOM setup
+//  SADLY NOT NEEDED
 
 let form = document.getElementById("login_form");
 let usernameInput = document.getElementById("login_username");

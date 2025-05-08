@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>log in to cosmic canvas</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>sign in to cosmic canvas</title>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
@@ -18,10 +18,13 @@
     <main>
         <section id="signup-box">
             <h1> sign up </h1>
-            <form id="signup_form">
+            <form id="signup_form" action="/signup" method="POST" novalidate>
 
                 <label for="username">username</label>
                 <input type="text" id="create_username" name="create_username">
+
+                <label for="email">email</label>
+                <input type="email" id="email" name="email">
 
                 <label for="password">password</label>
                 <input type="password" id="create_password" name="create_password">
@@ -46,5 +49,5 @@
         </section>
     </main>
     <footer></footer>
-    <script src="/public/js/signup_process.js"></script>
+    <script src="../js/signup_process.js"></script>
 </body>

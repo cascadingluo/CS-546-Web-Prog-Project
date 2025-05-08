@@ -52,19 +52,22 @@ router.route('/login')
       //finish for render 
       // res.redirect('/private');
       if (req.session.user.signedIn === true) {
-        res.redirect(`/${loggedin._id}`);
+        res.redirect('/');
+      } else {
+        res.redirect('/login');
       }
     }
     catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
+      res.redirect('/login');
     }
   });
 
 // when submit shoudl be redirected to signed in index if correct created 
 router.route('/signup')
   .get(async (req, res) => {
-    if (req.session.user && req.session.user.signedIn === false) {
+    if (!req.session.user || req.session.user.signedIn === false) {
       res.sendFile(path.resolve(__dirname, '../public/static/signup.html'));
     } else {
       res.redirect('/');
@@ -76,11 +79,14 @@ router.route('/signup')
       const userId = req.body.create_username;
       const password = req.body.create_password;
       const p2 = req.body.rep_pass;
-      const age = req.body.age;
+      if(password !== p2) {
+        throw new Error("Passwords dont match");
+      }
+      const age = Number(req.body.age);
       const email = req.body.email;
-      const registered = await register(userId, password, p2, age, email);
+      const registered = await register(userId, email, age, password);
       if (!registered) {
-        throw new Error("ADD ERR");
+        throw new Error("Could not register");
       }
       req.session.user = {
         signedIn: true,
@@ -97,16 +103,17 @@ router.route('/signup')
     catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
+      res.redirect('/signup');
     }
   });
 
 //can onyl view gallery if signed in
 router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
-  if (req.session.user && req.session.user.signedIn === true) {
-    res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
-  } else {
-    res.redirect('/');
-  }
+    if (req.session.user && req.session.user.signedIn === true) {
+      res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
+    } else {
+      res.redirect('/');
+    }
 });
 
 //   this version should have save
@@ -115,6 +122,8 @@ router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
 router.route('/edit')
   .get(async (req, res) => {
     if (req.session.user && req.session.user.signedIn === true) {
+      //make a new sandbox
+      //route them to that /edit/{sandboxId}
       res.sendFile(path.resolve(__dirname, '../public/static/edit.html'));
     } else {
       res.sendFile(path.resolve(__dirname, '../public/static/editNoSave.html'));
@@ -131,15 +140,23 @@ router.route('/edit')
       }
     } catch (e) {
       console.error(e);
+      res.redirect('/');
     }
   });
+
+  router.route('/edit/:SandboxId')
+  .get(async (req, res) => {
+    //load the planets <-- Zach will do this
+    //load the page
+  });
+
 
 router.route('/logout').get(async (req, res) => {
   req.session.user = null; 
   res.redirect('/');
 });
 
-router.route('/sandbox/:SandboxId')
+router.route('/view/:SandboxId')
   .get(async (req, res) => {
     // TO DO: SAND BOXES MUST BE LOADED FIRST
     if (req.session.user && req.session.user.signedIn === true) {
