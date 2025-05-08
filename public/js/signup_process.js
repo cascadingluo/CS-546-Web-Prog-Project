@@ -142,6 +142,7 @@ if (form) {
             error.innerHTML = 'age must be a number';
             return;
         }
-
+        
+        form.submit();
     });
 }
