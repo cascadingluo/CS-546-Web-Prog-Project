@@ -6,7 +6,7 @@ let yInput = document.getElementById("y-axis");
 let massInput = document.getElementById("mass");
 let radiusInput = document.getElementById("radius");
 let modeInputs = document.getElementsByName("mode");
-let velocityInput = document.getElementById("velocity");
+// let velocityInput = document.getElementById("velocity");
 let colorInput = document.getElementById("planet-color");
 let error = document.getElementById("error");
 
@@ -23,7 +23,7 @@ if (form) {
     const mass = massInput.value.trim();
     const radius = radiusInput.value.trim();
     const mode = Array.from(modeInputs).find((input) => input.checked).value;
-    const velocity = velocityInput.value.trim();
+    // const velocity = velocityInput.value.trim();
     const color = colorInput.value.trim();
 
     if (!name) {
@@ -56,10 +56,10 @@ if (form) {
       return;
     }
 
-    if (!velocity) {
-      showError("planet cannot have no velocity");
-      return;
-    }
+    // if (!velocity) {
+    //   showError("planet cannot have no velocity");
+    //   return;
+    // }
 
     if (!color) {
       showError("the planet must have a color");
