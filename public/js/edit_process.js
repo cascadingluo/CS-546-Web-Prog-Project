@@ -1,14 +1,14 @@
 // DOM setup
-let form = document.getElementById("editing_form");
-let nameInput = document.getElementById("create-sandbox-name");
-let xInput = document.getElementById("x-axis");
-let yInput = document.getElementById("y-axis");
-let massInput = document.getElementById("mass");
-let radiusInput = document.getElementById("radius");
-let modeInputs = document.getElementsByName("mode");
-// let velocityInput = document.getElementById("velocity");
-let colorInput = document.getElementById("planet-color");
-let error = document.getElementById("error");
+const form = document.getElementById("editing_form");
+const sandboxNameInput = document.getElementById("create-sandbox-name");
+const planetNameInput = document.getElementById("create-planet-name");
+const xVelocityInput = document.getElementById("x-axis");
+const yVelocityInput = document.getElementById("y-axis");
+const massInput = document.getElementById("mass");
+const radiusInput = document.getElementById("radius");
+const modeInputs = document.getElementsByName("mode");
+const colorInput = document.getElementById("planet-color");
+const error = document.getElementById("error");
 
 if (form) {
   form.addEventListener("submit", (event) => {
@@ -17,26 +17,31 @@ if (form) {
     error.hidden = true;
     error.innerHTML = "";
 
-    const name = nameInput.value.trim();
-    const x = xInput.value.trim();
-    const y = yInput.value.trim();
+    const sandboxName = sandboxNameInput.value.trim();
+    const planetName = planetNameInput.value.trim();
+    const vel_x = xVelocityInput.value.trim();
+    const vel_y = yVelocityInput.value.trim();
     const mass = massInput.value.trim();
     const radius = radiusInput.value.trim();
     const mode = Array.from(modeInputs).find((input) => input.checked).value;
-    // const velocity = velocityInput.value.trim();
     const color = colorInput.value.trim();
 
-    if (!name) {
+    if (!sandboxName) {
       showError("sandbox name is required");
       return;
     }
 
-    if (!x) {
+    if (!planetName) {
+      showError("planet name is required");
+      return;
+    }
+
+    if (!vel_x) {
       showError("the planet must have an x-axis");
       return;
     }
 
-    if (!y) {
+    if (!vel_y) {
       showError("the planet must have an y-axis");
       return;
     }
@@ -55,11 +60,6 @@ if (form) {
       showError("the planet must be static or dynamic");
       return;
     }
-
-    // if (!velocity) {
-    //   showError("planet cannot have no velocity");
-    //   return;
-    // }
 
     if (!color) {
       showError("the planet must have a color");
