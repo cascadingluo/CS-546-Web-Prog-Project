@@ -7,6 +7,18 @@ function orbitVelocity(radius, centralMass) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  // DOM setup
+  const form = document.getElementById("editing_form");
+  const sandboxNameInput = document.getElementById("create-sandbox-name");
+  const planetNameInput = document.getElementById("create-planet-name");
+  const xVelocityInput = document.getElementById("x-axis");
+  const yVelocityInput = document.getElementById("y-axis");
+  const massInput = document.getElementById("mass");
+  const radiusInput = document.getElementById("radius");
+  const modeInputs = document.getElementsByName("mode");
+  const colorInput = document.getElementById("planet-color");
+  const error = document.getElementById("error");
+
   const {
     Engine,
     Render,
@@ -14,7 +26,6 @@ window.addEventListener("DOMContentLoaded", () => {
     World,
     Bodies,
     Body,
-    Vector,
     Events,
     Mouse,
     MouseConstraint,
@@ -52,7 +63,7 @@ window.addEventListener("DOMContentLoaded", () => {
       sunMass,
       sunRadius,
       { x: 0, y: 0 },
-      true,
+      "static",
       "#FFFF00"
     ),
   ];
@@ -79,24 +90,29 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const mousePos = event.mouse.position;
 
-    //FOR TESTING ONLY, CHANGE LATER
-    const velocity = {
-      x: 0,
-      y: 0,
-    };
+    if (form) {
+      const name = planetNameInput.value;
+      const vel_x = xVelocityInput.value;
+      const vel_y = yVelocityInput.value;
+      const mass = massInput.value;
+      const radius = radiusInput.value;
+      const mode = Array.from(modeInputs).find((input) => input.checked).value;
+      const color = colorInput.value;
 
-    const planet = createPlanet(
-      "Planet",
-      mousePos.x,
-      mousePos.y,
-      10,
-      10,
-      velocity,
-      false,
-      "#1F7CDA"
-    );
-    planets.push(planet);
-    World.add(world, planet);
+      const planet = createPlanet(
+        name,
+        mousePos.x,
+        mousePos.y,
+        mass,
+        radius,
+        { x: vel_x, y: vel_y },
+        mode,
+        color
+      );
+
+      planets.push(planet);
+      World.add(world, planet);
+    }
   });
 
   Events.on(engine, "beforeUpdate", function (event) {
@@ -138,25 +154,25 @@ window.addEventListener("DOMContentLoaded", () => {
   const runner = Runner.create({});
   Runner.run(runner, engine);
 
-  function createPlanet(name, x, y, mass, radius, velocity, isStatic, color) {
+  function createPlanet(name, x, y, mass, radius, velocity, mode, color) {
     name = checkIsValidName(name);
     const pos = checkIsValidPosition(x, y);
-    mass = Number(checkIsValidMass(mass));
+    mass = checkIsValidMass(mass);
     radius = checkIsValidRadius(radius);
     velocity = checkIsValidVelocity(velocity);
-    isStatic = checkIsValidIsStatic(isStatic);
+    mode = checkIsValidMode(mode);
     color = checkIsValidColor(color);
 
     const planet = Bodies.circle(pos.x, pos.y, radius, {
       mass: mass,
-      isStatic: isStatic,
+      isStatic: mode,
       frictionAir: 0,
       friction: 0,
       render: { fillStyle: color },
     });
 
     Body.setVelocity(planet, velocity);
-    planet.custom = { mass, isStatic };
+    planet.custom = { mass, isStatic: mode };
     return planet;
   }
 });
@@ -173,32 +189,46 @@ function checkIsValidName(name) {
 }
 
 function checkIsValidPosition(x, y) {
+  x = parseFloat(x);
+  y = parseFloat(y);
   if (typeof x !== "number" || isNaN(x)) throw "x: Supply a number";
   if (typeof y !== "number" || isNaN(y)) throw "y: Supply a number";
   return { x, y };
 }
 
 function checkIsValidMass(mass) {
+  mass = parseFloat(mass);
   if (typeof mass !== "number" || isNaN(mass)) throw "Mass: Supply a number";
   if (mass === 0) throw "Mass: Cannot be zero";
-  return mass; // Return the number directly!
+  return mass;
 }
 
 function checkIsValidRadius(radius) {
+  radius = parseFloat(radius);
   if (typeof radius !== "number" || isNaN(radius))
     throw "Radius: Supply a number";
   if (radius === 0) throw "Radius: Cannot be zero";
   return radius;
 }
 
-function checkIsValidIsStatic(isStatic) {
-  if (typeof isStatic !== "boolean") throw "IsStatic: Supply a boolean";
-  return isStatic;
+function checkIsValidMode(mode) {
+  mode = mode.trim();
+  if (mode !== "static" && mode !== "dynamic")
+    throw "Mode: Supply either static or dynamic!";
+  return mode === "static";
 }
 
 function checkIsValidVelocity(velocity) {
-  if (typeof velocity !== "object" || Object.keys(velocity).length !== 2)
+  if (
+    typeof velocity !== "object" ||
+    Object.keys(velocity).length !== 2 ||
+    velocity.x === undefined ||
+    velocity.y === undefined
+  )
     throw "Velocity: Supply an x and a y component";
+
+  velocity.x = parseFloat(velocity.x);
+  velocity.y = parseFloat(velocity.y);
   if (typeof velocity.x !== "number" || isNaN(velocity.x))
     throw "Velocity x: Supply a number";
   if (typeof velocity.y !== "number" || isNaN(velocity.y))
@@ -214,14 +244,14 @@ function checkIsValidColor(color) {
   return color.toUpperCase();
 }
 
-function checkIsValidDensity(density) {
-  if (typeof density !== "number" || isNaN(density))
-    throw "Density: Supply a number";
-  if (density === 0) throw "Density: Cannot be zero";
-  return density;
-}
+// function checkIsValidDensity(density) {
+//   if (typeof density !== "number" || isNaN(density))
+//     throw "Density: Supply a number";
+//   if (density === 0) throw "Density: Cannot be zero";
+//   return density;
+// }
 
-function checkIsValidShape(shape) {
-  shape = checkIsValidString(shape, "Shape");
-  return shape; // Just return the shape name, fix shapeToBody later
-}
+// function checkIsValidShape(shape) {
+//   shape = checkIsValidString(shape, "Shape");
+//   return shape; // Just return the shape name, fix shapeToBody later
+// }

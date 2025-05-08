@@ -28,35 +28,29 @@
                 <div id="canvas"></div>
             </div>            
             <form id="editing_form">
-                
-                <!-- <label for="location">Location:</label>
-                <label for="x">
-                    <input type="range" id="x-axis" name="x-axis" min="-200" max="200">
-                </label>
-                <label for="y">
-                    <input type="range" id="y-axis" name="y-axis" min="-200" max="200">
-                </label> -->
                 <fieldset id="planet">
-                    <label for="planet-name">Planet Name:</label>
+                    <label for="create-planet-name">Planet Name:</label>
                     <input type="text" id="create-planet-name" name="create-planet-name"> 
                     <br>
 
-                    <label for="mass">Mass: <span id="mass-value">10</span></label>
-                    <input type="range" id="mass" name="mass" max="20" min="0">
+                    <label for="mass">Mass: <output id="massNum">10</output></label>
+                    <input type="range" id="mass" name="mass" max="20" min="0" oninput="massNum.value = this.value">
                     <br>
 
-                    <label for="radius">Radius: <span id="radius-value">10</span></label>
-                    <input type="range" id="radius" name="radius" min="0" max="20">
+                    <label for="radius">Radius: <output id="radiusNum">10</output></label>
+                    <input type="range" id="radius" name="radius" min="0" max="20" oninput="radiusNum.value = this.value">
                     <br>
 
                     <label for="velocity">Velocity:</label>
-                    <br>
-                    <label for="x">x-axis</label>
-                    <input type="number" id="x-axis" name="x-axis">
-                    <br>
-                    <label for="y">y-axis</label>
-                    <input type="number" id="y-axis" name="y-axis">
-                    <br>
+                    <div id="velocity">
+                        <br>
+                        <label for="x-axis">x-axis</label>
+                        <input type="number" id="x-axis" name="x-axis">
+                        <br>
+                        <label for="y-axis">y-axis</label>
+                        <input type="number" id="y-axis" name="y-axis">
+                        <br>
+                    </div>
 
                     <label for="static">
                         Static
