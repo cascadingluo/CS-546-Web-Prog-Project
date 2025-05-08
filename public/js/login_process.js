@@ -26,5 +26,7 @@ if (form) {
       error.innerHTML = "password is required";
       return;
     }
+
+    form.submit();
   });
 }
