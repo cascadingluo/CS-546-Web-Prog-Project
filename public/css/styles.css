@@ -107,7 +107,8 @@ button::after {
 
 #signup_form input[type="text"],
 #signup_form input[type="password"],
-#signup_form input[type="number"]  {
+#signup_form input[type="number"],
+#signup_form input[type="email"] {
     width: 64%;
     height: 20%;
     margin-top: 1%;

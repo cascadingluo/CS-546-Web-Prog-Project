@@ -52,12 +52,15 @@ router.route('/login')
       //finish for render 
       // res.redirect('/private');
       if (req.session.user.signedIn === true) {
-        res.redirect(`/${loggedin._id}`);
+        res.redirect('/');
+      } else {
+        res.redirect('/login');
       }
     }
     catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
+      res.redirect('/login');
     }
   });
 
@@ -76,11 +79,14 @@ router.route('/signup')
       const userId = req.body.create_username;
       const password = req.body.create_password;
       const p2 = req.body.rep_pass;
-      const age = req.body.age;
+      if(password !== p2) {
+        throw new Error("Passwords dont match");
+      }
+      const age = Number(req.body.age);
       const email = req.body.email;
-      const registered = await register(userId, password, p2, age, email);
+      const registered = await register(userId, email, age, password);
       if (!registered) {
-        throw new Error("ADD ERR");
+        throw new Error("Could not register");
       }
       req.session.user = {
         signedIn: true,
@@ -97,6 +103,7 @@ router.route('/signup')
     catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
+      res.redirect('/signup');
     }
   });
 
@@ -133,6 +140,7 @@ router.route('/edit')
       }
     } catch (e) {
       console.error(e);
+      res.redirect('/');
     }
   });
 

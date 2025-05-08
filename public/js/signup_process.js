@@ -1,5 +1,5 @@
 // DOM setup
-
+//  SADLY NOT NEEDED
 // let form = document.getElementById('signup_form');
 // let usernameInput = document.getElementById('create_username');
 // let passwordInput = document.getElementById('create_password');
