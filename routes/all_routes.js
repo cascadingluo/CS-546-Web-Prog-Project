@@ -4,6 +4,8 @@ import { users } from "../config/mongoCollections.js";
 import { register } from "../data/users.js";
 import { login } from "../data/users.js";
 import { createSandboxForUser } from "../data/sandboxes.js";
+// import {renderList} from "../public/js/listForEdit.js"
+import {getSandboxesbyUserId} from "../data/sandboxes.js"
 
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
 import path from 'path';
@@ -111,9 +113,23 @@ router.route('/signup')
 router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
     if (req.session.user && req.session.user.signedIn === true) {
       res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
+      //  renderList(getSandboxNames(req.session.user.userId));
     } else {
       res.redirect('/');
     }
+});
+
+router.route('/getSandboxesInfo').get(checkSignIn, async (req, res) => {
+  if (req.session.user && req.session.user.signedIn === true) {
+      let sandboxesList = getSandboxNames(req.session.user.userId);
+    // let sandboxesList =[{
+    //   name: "Test Sandbox",
+    //   edit: "/edit/663c8d530f1c4a2c40f8c0a1",
+    //   view: "/view/663c8d530f1c4a2c40f8c0a1",
+    //   share: "http://localhost:3000/view/663c8d530f1c4a2c40f8c0a1"
+    // }]
+    res.json(sandboxesList);
+  } 
 });
 
 //   this version should have save
@@ -174,6 +190,14 @@ function checkSignIn(req, res, next) {
     //if they go somewhere were should not be send em' home
     res.redirect('/');
   }
+}
+function getSandboxNames(user) {
+  let ret = []
+ let sandboxesLi =getSandboxesbyUserId(user);
+ for(let i = 0; i<sandboxesLi.length; i++){
+  ret.append({name: sandboxesLi[i].name, edit:`/edit/${sandboxesLi[i]._id}`, view:`/view/${sandboxesLi[i]._id}`, share:`http://localhost:3000/view/${sandboxesLi[i]._id}`})
+ }
+ return ret;
 }
 
 export default router;
