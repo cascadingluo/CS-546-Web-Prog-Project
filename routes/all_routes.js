@@ -1,16 +1,21 @@
-import express from 'express';
+import express from "express";
 import { sandboxes } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import { register } from "../data/users.js";
 import { login } from "../data/users.js";
 import { createSandboxForUser } from "../data/sandboxes.js";
 // import {renderList} from "../public/js/listForEdit.js"
-import {updateSandboxName, getSandboxesbyUserId, createPlanetInSandbox, getSandboxesById} from "../data/sandboxes.js"
-import fs from 'fs';
+import {
+  updateSandboxName,
+  getSandboxesbyUserId,
+  createPlanetInSandbox,
+  getSandboxesById,
+} from "../data/sandboxes.js";
+import fs from "fs";
 
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,22 +23,25 @@ const __dirname = path.dirname(__filename);
 let router = express.Router();
 
 // if not signed in the render home page
-router.route('/').get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   if (req.session.user && req.session.user.signedIn === true) {
     //https://stackoverflow.com/questions/25463423/res-sendfile-absolute-path
-    res.sendFile(path.resolve(__dirname, '../public/static/indexSignedIn.html'));
+    res.sendFile(
+      path.resolve(__dirname, "../public/static/indexSignedIn.html")
+    );
   } else {
-    res.sendFile(path.resolve(__dirname, '../public/static/index.html'));
+    res.sendFile(path.resolve(__dirname, "../public/static/index.html"));
   }
 });
 
 // when submit shoudl be redirected to signed in index if correct
-router.route('/login')
+router
+  .route("/login")
   .get(async (req, res) => {
     if (!req.session.user || req.session.user.signedIn === false) {
-      res.sendFile(path.resolve(__dirname, '../public/static/login.html'));
+      res.sendFile(path.resolve(__dirname, "../public/static/login.html"));
     } else {
-      res.redirect('/');
+      res.redirect("/");
     }
   })
   .post(async (req, res) => {
@@ -50,30 +58,30 @@ router.route('/login')
         // id: get from Db
         userId: loggedin._id,
         userName: loggedin.userName,
-        sandboxes: loggedin.sandboxes
-      }
-      //finish for render 
+        sandboxes: loggedin.sandboxes,
+      };
+      //finish for render
       // res.redirect('/private');
       if (req.session.user.signedIn === true) {
-        res.redirect('/');
+        res.redirect("/");
       } else {
-        res.redirect('/login');
+        res.redirect("/login");
       }
-    }
-    catch (e) {
+    } catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
-      res.redirect('/login');
+      res.redirect("/login");
     }
   });
 
-// when submit shoudl be redirected to signed in index if correct created 
-router.route('/signup')
+// when submit shoudl be redirected to signed in index if correct created
+router
+  .route("/signup")
   .get(async (req, res) => {
     if (!req.session.user || req.session.user.signedIn === false) {
-      res.sendFile(path.resolve(__dirname, '../public/static/signup.html'));
+      res.sendFile(path.resolve(__dirname, "../public/static/signup.html"));
     } else {
-      res.redirect('/');
+      res.redirect("/");
     }
   })
   .post(async (req, res) => {
@@ -82,7 +90,7 @@ router.route('/signup')
       const userId = req.body.create_username;
       const password = req.body.create_password;
       const p2 = req.body.rep_pass;
-      if(password !== p2) {
+      if (password !== p2) {
         throw new Error("Passwords dont match");
       }
       const age = Number(req.body.age);
@@ -96,33 +104,34 @@ router.route('/signup')
         // id: get from Db
         userId: registered._id,
         userName: registered.userName,
-        sandboxes: registered.sandboxes
-      }
+        sandboxes: registered.sandboxes,
+      };
 
       if (req.session.user.signedIn === true) {
-        res.redirect('/');
+        res.redirect("/");
       }
-    }
-    catch (e) {
+    } catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
-      res.redirect('/signup');
+      res.redirect("/signup");
     }
   });
 
 //can onyl view gallery if signed in
-router.route('/viewSandboxes').get(checkSignIn, async (req, res) => {
-    if (req.session.user && req.session.user.signedIn === true) {
-      res.sendFile(path.resolve(__dirname, '../public/static/viewSandboxes.html'));
-      //  renderList(getSandboxNames(req.session.user.userId));
-    } else {
-      res.redirect('/');
-    }
+router.route("/viewSandboxes").get(checkSignIn, async (req, res) => {
+  if (req.session.user && req.session.user.signedIn === true) {
+    res.sendFile(
+      path.resolve(__dirname, "../public/static/viewSandboxes.html")
+    );
+    //  renderList(getSandboxNames(req.session.user.userId));
+  } else {
+    res.redirect("/");
+  }
 });
 
-router.route('/getSandboxesInfo').get(checkSignIn, async (req, res) => {
+router.route("/getSandboxesInfo").get(checkSignIn, async (req, res) => {
   if (req.session.user && req.session.user.signedIn === true) {
-      let sandboxesList = await getSandboxNames(req.session.user.userId);
+    let sandboxesList = await getSandboxNames(req.session.user.userId);
     // let sandboxesList =[{
     //   name: "Test Sandbox",
     //   edit: "/edit/663c8d530f1c4a2c40f8c0a1",
@@ -130,13 +139,14 @@ router.route('/getSandboxesInfo').get(checkSignIn, async (req, res) => {
     //   share: "http://localhost:3000/view/663c8d530f1c4a2c40f8c0a1"
     // }]
     res.json(sandboxesList);
-  } 
+  }
 });
 
 //   this version should have save
-// FIGUREING OUT 
+// FIGUREING OUT
 
-router.route('/edit')
+router
+  .route("/edit")
   .get(async (req, res) => {
     if (req.session.user && req.session.user.signedIn === true) {
       //make a new sandbox
@@ -144,15 +154,18 @@ router.route('/edit')
       // res.sendFile(path.resolve(__dirname, '../public/static/edit.html'));
       try {
         const userId = req.session.user.userId;
-        const newSandbox = await createSandboxForUser(userId, 'untitled sandbox');
+        const newSandbox = await createSandboxForUser(
+          userId,
+          "untitled sandbox"
+        );
         const sandboxId = newSandbox.sandboxId;
         res.redirect(`/edit/${sandboxId}`);
       } catch (error) {
         console.error("error creating sandbox:", error);
-        res.redirect('/');
+        res.redirect("/");
       }
     } else {
-      res.sendFile(path.resolve(__dirname, '../public/static/editNoSave.html'));
+      res.sendFile(path.resolve(__dirname, "../public/static/editNoSave.html"));
     }
   })
   .post(async (req, res) => {
@@ -166,22 +179,23 @@ router.route('/edit')
       }
     } catch (e) {
       console.error(e);
-      res.redirect('/');
+      res.redirect("/");
     }
   });
 
-  router.route('/edit/:SandboxId')
+router
+  .route("/edit/:SandboxId")
   .get(async (req, res) => {
     //load the planets <-- Zach will do this
     //load the page
     const sandboxId = req.params.SandboxId;
-    const filePath = path.resolve(__dirname, '../public/static/edit.html');
-    fs.readFile(filePath, 'utf8', (error, html) => {
+    const filePath = path.resolve(__dirname, "../public/static/edit.html");
+    fs.readFile(filePath, "utf8", (error, html) => {
       if (error) {
         console.error(error);
         return res.status(500).send("Internal Server Error");
       }
-      const renderHTML = html.replace('{{SANDBOX_ID}}', sandboxId);
+      const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
       res.send(renderHTML);
     });
   })
@@ -197,7 +211,7 @@ router.route('/edit')
         mass,
         velocity,
         isStatic,
-        color
+        color,
       } = req.body;
 
       const planet = {
@@ -209,7 +223,7 @@ router.route('/edit')
         mass,
         velocity,
         isStatic,
-        color
+        color,
       };
       await updateSandboxName(sandboxId, sandboxName);
       await createPlanetInSandbox(sandboxId, planet, planetName);
@@ -220,50 +234,56 @@ router.route('/edit')
     }
   });
 
-
-router.route('/logout').get(async (req, res) => {
-  req.session.user = null; 
-  res.redirect('/');
+router.route("/logout").get(async (req, res) => {
+  req.session.user = null;
+  res.redirect("/");
 });
 
-router.route('/view/:SandboxId')
-  .get(async (req, res) => {
-    // TO DO: SAND BOXES MUST BE LOADED FIRST
-    if (req.session.user && req.session.user.signedIn === true) {
-      res.sendFile(path.resolve(__dirname, '../public/static/viewSimSignedIn.html'));
+router.route("/view/:SandboxId").get(async (req, res) => {
+  // TO DO: SAND BOXES MUST BE LOADED FIRST
+  if (req.session.user && req.session.user.signedIn === true) {
+    res.sendFile(
+      path.resolve(__dirname, "../public/static/viewSimSignedIn.html")
+    );
+  } else {
+    res.sendFile(path.resolve(__dirname, "../public/static/viewSim.html"));
+  }
+});
 
-    } else {
-      res.sendFile(path.resolve(__dirname, '../public/static/viewSim.html'));
-    }
-  });
+router.route("/api/sandbox/:SandboxId").get(async (req, res) => {
+  try {
+    const sandboxId = req.params.SandboxId;
+    const sandbox = await getSandboxesById(sandboxId);
+    res.json(sandbox);
+  } catch (e) {
+    console.error("Failed to load sandbox:", e);
+    res.status(500).json({ error: e.toString() });
+  }
+});
 
-  router.route('/api/sandbox/:SandboxId').get(async (req, res) => {
-    try {
-      const sandboxId = req.params.SandboxId;
-      const sandbox = await getSandboxesById(sandboxId);
-      res.json(sandbox);
-    } catch (e) {
-      console.error("Failed to load sandbox:", e);
-      res.status(500).json({ error: e.toString() });
-    }
-  });
-  
 function checkSignIn(req, res, next) {
   if (req.session.user && req.session.user.signedIn === true) {
     next();
   } else {
     //if they go somewhere were should not be send em' home
-    res.redirect('/');
+    res.redirect("/");
   }
 }
-async function getSandboxNames(user) { //i changed this to an async function 
-let ret = []
- let sandboxesLi = await getSandboxesbyUserId(user); //this should be await as well i think
- for(let i = 0; i<sandboxesLi.length; i++){
-  ret.push({name: sandboxesLi[i].sandbox_name, edit:`/edit/${sandboxesLi[i]._id}`, view:`/view/${sandboxesLi[i]._id}`, share:`http://localhost:3000/view/${sandboxesLi[i]._id}`})
- } //i also changed this to push instead of append it was giving me an error for append?
- return ret;
- 
+
+async function getSandboxNames(user) {
+  //i changed this to an async function
+  let ret = [];
+  let sandboxesLi = await getSandboxesbyUserId(user); //this should be await as well i think
+  for (let i = 0; i < sandboxesLi.length; i++) {
+    ret.push({
+      name: sandboxesLi[i].sandbox_name,
+      edit: `/edit/${sandboxesLi[i]._id}`,
+      view: `/view/${sandboxesLi[i]._id}`,
+      // Change localhost:3000?
+      share: `http://localhost:3000/view/${sandboxesLi[i]._id}`,
+    });
+  } //i also changed this to push instead of append it was giving me an error for append?
+  return ret;
 }
 
 export default router;

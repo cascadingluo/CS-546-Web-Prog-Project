@@ -91,7 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const mousePos = event.mouse.position;
 
     if (form) {
-      const sandboxName = sandboxNameInput.value.trim();
+      //const sandboxName = sandboxNameInput.value.trim();
       const name = planetNameInput.value;
       const vel_x = xVelocityInput.value;
       const vel_y = yVelocityInput.value;
@@ -99,57 +99,6 @@ window.addEventListener("DOMContentLoaded", () => {
       const radius = radiusInput.value;
       const mode = Array.from(modeInputs).find((input) => input.checked).value;
       const color = colorInput.value;
-
-      // if (!sandboxName) {
-      //   error.hidden = false;
-      //   error.innerHTML = "sandbox name is required";
-      //   return;
-      // }
-
-      // if (!name) {
-      //   error.hidden = false;
-      //   error.innerHTML = "planet name is required";
-      //   return;
-      // }
-
-      // if (!vel_x) {
-      //   error.hidden = false;
-      //   error.innerHTML = "the planet must have an x-axis velocity";
-      //   return;
-      // }
-
-      // if (!vel_y) {
-      //   error.hidden = false;
-      //   error.innerHTML = "the planet must have an y-axis velocity";
-      //   return;
-      // }
-
-      // if (!mass || mass < 0) {
-      //   error.hidden = false;
-      //   error.innerHTML = "planet cannot have less than or equal to 0 mass";
-      //   return;
-      // }
-
-      // if (!radius || radius <= 0) {
-      //   error.hidden = false;
-      //   error.innerHTML = "planet cannot have less than or equal to 0 radius";
-      //   return;
-      // }
-
-      // if (!mode || (mode !== "static" && mode !== "dynamic")) {
-      //   error.hidden = false;
-      //   error.innerHTML = "the planet must be static or dynamic";
-      //   return;
-      // }
-
-      // if (!color) {
-      //   error.hidden = false;
-      //   error.innerHTML = "the planet must have a color";
-      //   return;
-      // }
-
-      // error.hidden = true;
-      // error.innerHTML = "";
 
       let planet;
       try {
@@ -324,15 +273,15 @@ function checkIsValidName(name) {
 function checkIsValidPosition(x, y) {
   x = parseFloat(x);
   y = parseFloat(y);
-  if (typeof x !== "number" || isNaN(x)) throw "x: Out of bounds";
-  if (typeof y !== "number" || isNaN(y)) throw "y: Out of bounds";
+  if (typeof x !== "number" || isNaN(x)) throw "x: Supply a number";
+  if (typeof y !== "number" || isNaN(y)) throw "y: Supply a number";
   return { x, y };
 }
 
 function checkIsValidMass(mass) {
   mass = parseFloat(mass);
   if (typeof mass !== "number" || isNaN(mass)) throw "Mass: Supply a number";
-  if (mass === 0) throw "Mass: Cannot be zero";
+  if (mass <= 0) throw "Mass: Cannot be less than or equal to zero";
   return mass;
 }
 
@@ -340,7 +289,7 @@ function checkIsValidRadius(radius) {
   radius = parseFloat(radius);
   if (typeof radius !== "number" || isNaN(radius))
     throw "Radius: Supply a number";
-  if (radius === 0) throw "Radius: Cannot be zero";
+  if (radius <= 0) throw "Radius: Cannot be less than or equal to zero";
   return radius;
 }
 

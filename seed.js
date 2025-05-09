@@ -16,7 +16,31 @@ try {
     "testPassword0!"
   );
 } catch (e) {
-  console.error(e);
+  exitWithFailure(e);
 }
 
+let sandbox1;
+try {
+  sandbox1 = await sandboxes.createSandboxForUser(
+    user1.user._id,
+    "Test sandbox one"
+  );
+} catch (e) {
+  exitWithFailure(e);
+}
+
+// let planet1;
+// try {
+//   planet1 = await sandboxes.createPlanetInSandbox(sandbox1.sandboxId);
+// } catch (e) {
+//   console.error(e);
+// }
+
 console.log("Done seeding the database.");
+
+await closeConnection();
+
+function exitWithFailure(errorMsg) {
+  console.error(errorMsg);
+  process.exit(1);
+}
