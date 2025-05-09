@@ -308,49 +308,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function submitAndSavePlanet() { 
-    const sandboxName = sandboxNameInput.value.trim();
-    const name = planetNameInput.value.trim();
-    const vel_x = parseFloat(xVelocityInput.value.trim());
-    const vel_y = parseFloat(yVelocityInput.value.trim());
-    const mass = parseFloat(massInput.value.trim());
-    const radius = parseFloat(radiusInput.value.trim());
-    const mode = Array.from(modeInputs).find((input) => input.checked).value;
-    const color = colorInput.value.trim();
-  
-    try {
-      const planet = createPlanet(
-        name,
-        canvas.offsetWidth / 2,
-        canvas.offsetHeight / 2,
-        mass,
-        radius,
-        { x: vel_x, y: vel_y },
-        mode,
-        color
-      );
-      planets.push(planet);
-      World.add(world, planet);
-  
-      if (typeof sandboxId !== 'undefined') {
-        const planetData = {
-          name,
-          x: planet.position.x,
-          y: planet.position.y,
-          radius,
-          mass,
-          velocity: { x: vel_x, y: vel_y },
-          isStatic: mode === "static",
-          color
-        };
-        savePlanetToSandbox(sandboxId, planetData);
-      }
-    } catch (e) {
-      error.hidden = false;
-      error.innerHTML = e;
-    }
-  }
-
 });
 
 // Check if string is not empty or just space and trims it
