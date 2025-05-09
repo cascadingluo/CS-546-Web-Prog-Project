@@ -91,6 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const mousePos = event.mouse.position;
 
     if (form) {
+      const sandboxName = sandboxNameInput.value.trim();
       const name = planetNameInput.value;
       const vel_x = xVelocityInput.value;
       const vel_y = yVelocityInput.value;
@@ -98,6 +99,58 @@ window.addEventListener("DOMContentLoaded", () => {
       const radius = radiusInput.value;
       const mode = Array.from(modeInputs).find((input) => input.checked).value;
       const color = colorInput.value;
+
+      if (!sandboxName) {
+        error.hidden = false;
+        error.innerHTML = "sandbox name is required";
+        return;
+      }
+  
+      if (!name) {
+        error.hidden = false;
+        error.innerHTML = "planet name is required";
+        return;
+      }
+  
+      if (!vel_x) {
+        error.hidden = false;
+        error.innerHTML = "the planet must have an x-axis velocity";
+        return;
+      }
+  
+      if (!vel_y) {
+        error.hidden = false;
+        error.innerHTML = "the planet must have an y-axis velocity";
+        return;
+      }
+  
+      if (!mass || mass < 0) {
+        error.hidden = false;
+        error.innerHTML = "planet cannot have less than or equal to 0 mass";
+        return;
+      }
+  
+      if (!radius || radius <= 0) {
+        error.hidden = false;
+        error.innerHTML = "planet cannot have less than or equal to 0 radius";
+        return;
+      }
+  
+      if (!mode || (mode !== "static" && mode !== "dynamic")) {
+        error.hidden = false;
+        error.innerHTML = "the planet must be static or dynamic";
+        return;
+      }
+  
+      if (!color) {
+        error.hidden = false;
+        error.innerHTML = "the planet must have a color";
+        return;
+      }
+
+      error.hidden = true;
+      error.innerHTML = "";
+
 
       const planet = createPlanet(
         name,

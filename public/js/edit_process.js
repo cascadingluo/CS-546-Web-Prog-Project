@@ -27,50 +27,56 @@ if (form) {
     const color = colorInput.value.trim();
 
     if (!sandboxName) {
-      showError("sandbox name is required");
+      error.hidden = false;
+      error.innerHTML = "sandbox name is required";
       return;
     }
 
     if (!planetName) {
-      showError("planet name is required");
+      error.hidden = false;
+      error.innerHTML = "planet name is required";
       return;
     }
 
     if (!vel_x) {
-      showError("the planet must have an x-axis");
+      error.hidden = false;
+      error.innerHTML = "the planet must have an x-axis velocity";
       return;
     }
 
     if (!vel_y) {
-      showError("the planet must have an y-axis");
+      error.hidden = false;
+      error.innerHTML = "the planet must have an y-axis velocity";
       return;
     }
 
     if (!mass || mass < 0) {
-      showError("planet cannot have less than or equal to 0 mass");
+      error.hidden = false;
+      error.innerHTML = "planet cannot have less than or equal to 0 mass";
       return;
     }
 
     if (!radius || radius <= 0) {
-      showError("planet cannot have less than or equal to 0 radius");
+      error.hidden = false;
+      error.innerHTML = "planet cannot have less than or equal to 0 radius";
       return;
     }
 
     if (!mode || (mode !== "static" && mode !== "dynamic")) {
-      showError("the planet must be static or dynamic");
+      error.hidden = false;
+      error.innerHTML = "the planet must be static or dynamic";
       return;
     }
 
     if (!color) {
-      showError("the planet must have a color");
+      error.hidden = false;
+      error.innerHTML = "the planet must have a color";
       return;
     }
   });
 
+  // form.submit();
+
   //HERE IS WHERE WE WILL CALL THE SAVE SANDBOX FUNCTION RESIDING IN SIM.JS
 }
 
-function showError(message) {
-  error.hidden = false;
-  error.innerHTML = message;
-}
