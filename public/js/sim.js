@@ -100,68 +100,77 @@ window.addEventListener("DOMContentLoaded", () => {
       const mode = Array.from(modeInputs).find((input) => input.checked).value;
       const color = colorInput.value;
 
-      if (!sandboxName) {
+      // if (!sandboxName) {
+      //   error.hidden = false;
+      //   error.innerHTML = "sandbox name is required";
+      //   return;
+      // }
+
+      // if (!name) {
+      //   error.hidden = false;
+      //   error.innerHTML = "planet name is required";
+      //   return;
+      // }
+
+      // if (!vel_x) {
+      //   error.hidden = false;
+      //   error.innerHTML = "the planet must have an x-axis velocity";
+      //   return;
+      // }
+
+      // if (!vel_y) {
+      //   error.hidden = false;
+      //   error.innerHTML = "the planet must have an y-axis velocity";
+      //   return;
+      // }
+
+      // if (!mass || mass < 0) {
+      //   error.hidden = false;
+      //   error.innerHTML = "planet cannot have less than or equal to 0 mass";
+      //   return;
+      // }
+
+      // if (!radius || radius <= 0) {
+      //   error.hidden = false;
+      //   error.innerHTML = "planet cannot have less than or equal to 0 radius";
+      //   return;
+      // }
+
+      // if (!mode || (mode !== "static" && mode !== "dynamic")) {
+      //   error.hidden = false;
+      //   error.innerHTML = "the planet must be static or dynamic";
+      //   return;
+      // }
+
+      // if (!color) {
+      //   error.hidden = false;
+      //   error.innerHTML = "the planet must have a color";
+      //   return;
+      // }
+
+      // error.hidden = true;
+      // error.innerHTML = "";
+
+      let planet;
+      try {
+        planet = createPlanet(
+          name,
+          mousePos.x,
+          mousePos.y,
+          mass,
+          radius,
+          { x: vel_x, y: vel_y },
+          mode,
+          color
+        );
+      } catch (e) {
         error.hidden = false;
-        error.innerHTML = "sandbox name is required";
-        return;
-      }
-  
-      if (!name) {
-        error.hidden = false;
-        error.innerHTML = "planet name is required";
-        return;
-      }
-  
-      if (!vel_x) {
-        error.hidden = false;
-        error.innerHTML = "the planet must have an x-axis velocity";
-        return;
-      }
-  
-      if (!vel_y) {
-        error.hidden = false;
-        error.innerHTML = "the planet must have an y-axis velocity";
-        return;
-      }
-  
-      if (!mass || mass < 0) {
-        error.hidden = false;
-        error.innerHTML = "planet cannot have less than or equal to 0 mass";
-        return;
-      }
-  
-      if (!radius || radius <= 0) {
-        error.hidden = false;
-        error.innerHTML = "planet cannot have less than or equal to 0 radius";
-        return;
-      }
-  
-      if (!mode || (mode !== "static" && mode !== "dynamic")) {
-        error.hidden = false;
-        error.innerHTML = "the planet must be static or dynamic";
-        return;
-      }
-  
-      if (!color) {
-        error.hidden = false;
-        error.innerHTML = "the planet must have a color";
+        error.innerHTML = e;
         return;
       }
 
       error.hidden = true;
       error.innerHTML = "";
-
-
-      const planet = createPlanet(
-        name,
-        mousePos.x,
-        mousePos.y,
-        mass,
-        radius,
-        { x: vel_x, y: vel_y },
-        mode,
-        color
-      );
 
       planets.push(planet);
       World.add(world, planet);
@@ -233,19 +242,19 @@ window.addEventListener("DOMContentLoaded", () => {
 // Check if string is not empty or just space and trims it
 function checkIsValidString(str, argName) {
   if (typeof str !== "string" || str.trim() === "")
-    throw `${argName}: Supply a non-empty string`;
+    throw `${argName}: Supply a value`;
   return str.trim();
 }
 
 function checkIsValidName(name) {
-  return checkIsValidString(name, "Name");
+  return checkIsValidString(name, "Planet name");
 }
 
 function checkIsValidPosition(x, y) {
   x = parseFloat(x);
   y = parseFloat(y);
-  if (typeof x !== "number" || isNaN(x)) throw "x: Supply a number";
-  if (typeof y !== "number" || isNaN(y)) throw "y: Supply a number";
+  if (typeof x !== "number" || isNaN(x)) throw "x: Out of bounds";
+  if (typeof y !== "number" || isNaN(y)) throw "y: Out of bounds";
   return { x, y };
 }
 
