@@ -31,16 +31,31 @@ if (form) {
       error.innerHTML = "sandbox name is required";
       return;
     }
+    if (typeof sandboxName !== "string" || sandboxName.trim() === "") {
+      error.hidden = false;
+      error.innerHTML = "sandbox name must be a string and not only spaces";
+      return;
+    }
 
     if (!planetName) {
       error.hidden = false;
       error.innerHTML = "planet name is required";
       return;
     }
-
+    if (typeof planetName !== "string" || planetName.trim() === "") {
+      error.hidden = false;
+      error.innerHTML = "planet name must be a string and not only spaces";
+      return;
+    }
+    
     if (!vel_x) {
       error.hidden = false;
       error.innerHTML = "the planet must have an x-axis velocity";
+      return;
+    }
+    if (typeof vel_x !== "number" || isNaN(vel_x)) {
+      error.hidden = false;
+      error.innerHTML = "the x-axis velocity must be an number";
       return;
     }
 
@@ -49,16 +64,31 @@ if (form) {
       error.innerHTML = "the planet must have an y-axis velocity";
       return;
     }
+    if (typeof vel_y !== "number" || isNaN(vel_y)) {
+      error.hidden = false;
+      error.innerHTML = "the y-axis velocity must be an number";
+      return;
+    }
 
     if (!mass || mass < 0) {
       error.hidden = false;
       error.innerHTML = "planet cannot have less than or equal to 0 mass";
       return;
     }
+    if (typeof mass !== "number" || isNaN(mass)) {
+      error.hidden = false;
+      error.innerHTML = "mass must be a number";
+      return;
+    }
 
     if (!radius || radius <= 0) {
       error.hidden = false;
       error.innerHTML = "planet cannot have less than or equal to 0 radius";
+      return;
+    }
+    if (typeof radius !== "number" || isNaN(radius)) {
+      error.hidden = false;
+      error.innerHTML = "radius must be a number";
       return;
     }
 
@@ -71,6 +101,12 @@ if (form) {
     if (!color) {
       error.hidden = false;
       error.innerHTML = "the planet must have a color";
+      return;
+    }
+    const hexPattern = /^#[a-f0-9]{6}$/i;
+    if (!hexPattern.test(color)) {
+      error.hidden = false;
+      error.innerHTML = "the color inputted is invalid";
       return;
     }
   });
