@@ -19,10 +19,10 @@ if (form) {
 
     const sandboxName = sandboxNameInput.value.trim();
     const planetName = planetNameInput.value.trim();
-    const vel_x = xVelocityInput.value.trim();
-    const vel_y = yVelocityInput.value.trim();
-    const mass = massInput.value.trim();
-    const radius = radiusInput.value.trim();
+    let vel_x = xVelocityInput.value.trim();
+    let vel_y = yVelocityInput.value.trim();
+    let mass = massInput.value.trim();
+    let radius = radiusInput.value.trim();
     const mode = Array.from(modeInputs).find((input) => input.checked).value;
     const color = colorInput.value.trim();
 
@@ -48,11 +48,12 @@ if (form) {
       return;
     }
     
-    if (!vel_x) {
+    if (!vel_x) { 
       error.hidden = false;
       error.innerHTML = "the planet must have an x-axis velocity";
       return;
     }
+    vel_x = Number(xVelocityInput.value.trim());
     if (typeof vel_x !== "number" || isNaN(vel_x)) {
       error.hidden = false;
       error.innerHTML = "the x-axis velocity must be an number";
@@ -64,31 +65,34 @@ if (form) {
       error.innerHTML = "the planet must have an y-axis velocity";
       return;
     }
+    vel_y = Number(yVelocityInput.value.trim());
     if (typeof vel_y !== "number" || isNaN(vel_y)) {
       error.hidden = false;
       error.innerHTML = "the y-axis velocity must be an number";
       return;
     }
 
-    if (!mass || mass < 0) {
+    if (!mass) {
       error.hidden = false;
-      error.innerHTML = "planet cannot have less than or equal to 0 mass";
+      error.innerHTML = "planet must have a mass";
       return;
     }
-    if (typeof mass !== "number" || isNaN(mass)) {
+    mass = Number(massInput.value.trim());
+    if (typeof mass !== "number" || isNaN(mass) || mass < 0) {
       error.hidden = false;
-      error.innerHTML = "mass must be a number";
+      error.innerHTML = "mass must be a number greater than 0";
       return;
     }
-
-    if (!radius || radius <= 0) {
+    
+    if (!radius) {
       error.hidden = false;
-      error.innerHTML = "planet cannot have less than or equal to 0 radius";
+      error.innerHTML = "planet must have a radius";
       return;
     }
-    if (typeof radius !== "number" || isNaN(radius)) {
+    radius = Number(radiusInput.value.trim());
+    if (typeof radius !== "number" || isNaN(radius) || radius <= 0) {
       error.hidden = false;
-      error.innerHTML = "radius must be a number";
+      error.innerHTML = "radius must be a number greater than or equal to 0";
       return;
     }
 

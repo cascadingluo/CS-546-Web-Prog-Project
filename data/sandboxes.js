@@ -41,7 +41,7 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
         throw 'Error: Invalid Sandbox Id';
     }
 
-    const {x, y, radius, mass, isStatic, color} = planet_object;
+    const {x, y, radius, mass, isStatic, color, velocity} = planet_object;
 
     name = helper.checkIsProperName(name, "planet");
     if(typeof x !== 'number' || typeof y !== 'number') throw 'Invalid Position';
@@ -53,6 +53,14 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     if (!hexaPattern.test(color))
         throw `Error: ${color} is an invalid hex color code`; 
 
+    if (
+        typeof velocity !== 'object' ||
+        typeof velocity.x !== 'number' ||
+        typeof velocity.y !== 'number'
+      ) {
+        throw 'velocity must be an object with valid x and y';
+      }
+
     // I need to check the frontend fields to see exactly what the planet object looks like and what we are passing into the backend
     let new_planet = {
         _id: new ObjectId(),
@@ -62,7 +70,8 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
         radius, 
         mass,
         isStatic,
-        color
+        color,
+        velocity
     }
 
     const sandboxesCollection = await sandboxes();
@@ -169,4 +178,22 @@ export const createSandboxForUser = async (userId, sandbox_Name) => {
     return updated_user;
   };
 
-export default {createSandboxForUser, createPlanetInSandbox, getSandboxesbyUserId, removeSandbox, getSandboxesById}
+  export const updateSandboxName = async (sandboxId, newName) => {
+    if (!ObjectId.isValid(sandboxId)) {
+        throw 'invalid sandbox ID';
+    }
+    newName = helper.checkIsProperName(newName, 'Sandbox name');
+  
+    const sandboxesCollection = await sandboxes();
+    const result = await sandboxesCollection.findOneAndUpdate(
+      { _id: new ObjectId(sandboxId) },
+      { $set: { sandbox_name: newName } },
+      { returnDocument: 'after' }
+    );
+  
+    if (!result) throw 'Failed to update sandbox name';
+    return result;
+  };
+  
+
+export default {updateSandboxName, createSandboxForUser, createPlanetInSandbox, getSandboxesbyUserId, removeSandbox, getSandboxesById}

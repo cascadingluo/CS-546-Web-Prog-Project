@@ -123,6 +123,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
       planets.push(planet);
       World.add(world, planet);
+
+      if (typeof sandboxId !== 'undefined') {
+        const planetData = {
+          sandboxName,
+          planetName: name,
+          x: mousePos.x,
+          y: mousePos.y,
+          radius: parseFloat(radius),
+          mass: parseFloat(mass),
+          velocity: { x: parseFloat(vel_x), y: parseFloat(vel_y) },
+          isStatic: mode === "static",
+          color: color.toUpperCase()
+        };
+        savePlanetToSandbox(sandboxId, planetData);
+      }
+      
     }
   });
 
@@ -165,6 +181,36 @@ window.addEventListener("DOMContentLoaded", () => {
   const runner = Runner.create({});
   Runner.run(runner, engine);
 
+  //this should be able to render everything if the box already existed
+  fetch(`/api/sandbox/${sandboxId}`) //makes GET request to the server
+  .then(res => res.json())
+  .then(data => {
+    sandboxNameInput.value = data.sandbox_name || '';
+    if (data.planets && Array.isArray(data.planets)) {
+      for (const p of data.planets) {
+        try {
+          const planet = createPlanet( //all info about the planet returns 
+            p.name,
+            p.x,
+            p.y,
+            p.mass,
+            p.radius,
+            p.velocity || { x: 0, y: 0 }, 
+            p.isStatic ? "static" : "dynamic",
+            p.color
+          );
+          planets.push(planet);
+          World.add(world, planet);
+        } catch (e) {
+          console.error("failed to load planet:", p.name, e);
+        }
+      }
+    }
+  })
+  .catch(err => {
+    console.error("Failed to load sandbox planets:", err);
+  });
+
   function createPlanet(name, x, y, mass, radius, velocity, mode, color) {
     name = checkIsValidName(name);
     const pos = checkIsValidPosition(x, y);
@@ -186,6 +232,31 @@ window.addEventListener("DOMContentLoaded", () => {
     planet.custom = { mass, isStatic: mode };
     return planet;
   }
+
+  async function savePlanetToSandbox(sandboxId, planetData) { //sends new planet to the server
+    try {
+      const response = await fetch(`/edit/${sandboxId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(planetData)
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        console.error("unable to save the planet:", result);
+        error.hidden = false;
+        error.innerHTML = result.error;
+      }
+      else {
+        console.log("planet was sucessfully saved")
+      }
+    } catch (error) {
+      error.hidden = false;
+      error.innerHTML = "failed to save planet";
+    }
+  }
+
 });
 
 // Check if string is not empty or just space and trims it
