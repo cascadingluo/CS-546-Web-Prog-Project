@@ -120,10 +120,7 @@ export const getSandboxesbyUserId = async (userId) => {
   return sandbox_docs.map((sand_box) => ({
     ...sand_box,
     _id: sand_box._id.toString(),
-    planets: sand_box.planets.map((planet) => ({
-      ...planet,
-      _id: planet._id.toString(),
-    })),
+    planets: sand_box.planets
   }));
 };
 
