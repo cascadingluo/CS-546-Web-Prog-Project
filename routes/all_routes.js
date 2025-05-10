@@ -19,6 +19,7 @@ import fs from "fs";
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
 import path from "path";
 import { fileURLToPath } from "url";
+import { ObjectId } from "mongodb";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -192,6 +193,9 @@ router
     //load the planets <-- Zach will do this
     //load the page
     const sandboxId = req.params.SandboxId;
+    if (!req.session.user.sandboxes.includes(sandboxId)) {
+      res.redirect("/");
+    }
     const filePath = path.resolve(__dirname, "../public/static/edit.html");
     fs.readFile(filePath, "utf8", (error, html) => {
       if (error) {
@@ -239,6 +243,36 @@ router
     }
   });
 
+  router.get('/copySandbox/:sandboxId', checkSignIn, async (req, res) => {
+    try {
+      const originalSandboxId = req.params.sandboxId;
+      const userId = req.session.user.userId;
+      if (!ObjectId.isValid(originalSandboxId)) {
+        throw `Invalid sandbox ID format.`;
+      }
+      console.log(originalSandboxId);
+      const originalSandbox = await getSandboxesById(new ObjectId(originalSandboxId));
+      if (!originalSandbox) {
+        return res.status(404).send("Original sandbox not found");
+      }
+  
+      const newSandbox = await createSandboxForUser(userId, originalSandbox.sandbox_name + " Copy");
+  
+      for (const planet of originalSandbox.planets) {
+        await createPlanetInSandbox(
+          newSandbox.sandboxId,
+          planet,
+          planet.name
+        );
+      }
+  
+      res.redirect(`/edit/${newSandbox.sandboxId}`);
+    } catch (e) {
+      console.error("Failed to copy sandbox:", e);
+      res.status(500).send("Server error");
+    }
+  });
+
 router.route("/logout").get(async (req, res) => {
   req.session.user = null;
   res.redirect("/");
@@ -246,10 +280,17 @@ router.route("/logout").get(async (req, res) => {
 
 router.route("/view/:SandboxId").get(async (req, res) => {
   // TO DO: SAND BOXES MUST BE LOADED FIRST
+  const sandboxId = req.params.SandboxId;
   if (req.session.user && req.session.user.signedIn === true) {
-    res.sendFile(
-      path.resolve(__dirname, "../public/static/viewSimSignedIn.html")
-    );
+      const filePath = path.resolve(__dirname, "../public/static/viewSimSignedIn.html")
+      fs.readFile(filePath, "utf8", (error, html) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).send("Internal Server Error");
+        }
+        const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
+        res.send(renderHTML);
+      });
   } else {
     res.sendFile(path.resolve(__dirname, "../public/static/viewSim.html"));
   }

@@ -226,6 +226,34 @@ export const updateAllPlanetsInSandbox = async (sandboxId, planets) => {
   return insertedPlanets;
 };
 
+// export const copySandboxInUser_db = async(sandboxId, userId) => {
+//   const sandboxesCollection = await sandboxes();
+//   const original_sandbox = await sandboxesCollection.findOne(
+//     { _id: new ObjectId(sandboxId)}
+//   );
+
+//   if(!original_sandbox || !original_sandbox.shared) throw `Could not create a copy as the sandbox is not shared!`;
+//   const copy_shared_sandboxId = new ObjectId();
+
+//   const copy = {
+//     _id: copy_shared_sandboxId,
+//     userId: new ObjectId(userId),
+//     sandbox_name: original_sandbox.sandbox_name + 'copy',
+//     planets: original_sandbox.planets,
+//     shared: false,
+//     sharedWith: []
+//   }
+
+//   const updated_user_sandbox = await usersCollection.findOneAndUpdate(
+//     { _id: userId},
+//     { $push: { sandboxes: copy_shared_sandboxId } },
+//     { returnDocument: "after" }
+//   );
+
+//   if (!updated_user_sandbox) throw "Could not update user's sandboxes with the copied sandbox";
+//   return {...copy, id: copy_shared_sandboxId};
+// }
+
 export default {
   updateSandboxName,
   createSandboxForUser,
@@ -234,4 +262,5 @@ export default {
   removeSandbox,
   getSandboxesById,
   updateAllPlanetsInSandbox,
+  copySandboxInUser_db,
 };
