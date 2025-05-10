@@ -124,20 +124,20 @@ window.addEventListener("DOMContentLoaded", () => {
       planets.push(planet);
       World.add(world, planet);
 
-      if (typeof sandboxId !== "undefined") {
-        const planetData = {
-          sandboxName,
-          planetName: name,
-          x: mousePos.x,
-          y: mousePos.y,
-          radius: parseFloat(radius),
-          mass: parseFloat(mass),
-          velocity: { x: parseFloat(vel_x), y: parseFloat(vel_y) },
-          isStatic: mode === "static",
-          color: color.toUpperCase(),
-        };
-        savePlanetToSandbox(sandboxId, planetData);
-      }
+      // if (typeof sandboxId !== "undefined") {
+      //   const planetData = {
+      //     sandboxName,
+      //     planetName: name,
+      //     x: mousePos.x,
+      //     y: mousePos.y,
+      //     radius: parseFloat(radius),
+      //     mass: parseFloat(mass),
+      //     velocity: { x: parseFloat(vel_x), y: parseFloat(vel_y) },
+      //     isStatic: mode === "static",
+      //     color: color.toUpperCase(),
+      //   };
+      //   savePlanetToSandbox(sandboxId, planetData);
+      // }
     }
   });
 
@@ -212,6 +212,29 @@ window.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to load sandbox planets:", err);
     });
 
+  // Save the list of planets to sandbox when form is submitted
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const sandboxName = sandboxNameInput.value.trim();
+    if (typeof sandboxId !== "undefined") {
+      for (const planet of planets) {
+        const planetData = {
+          sandboxName,
+          planetName: planet.label,
+          x: planet.position.x,
+          y: planet.position.y,
+          radius: parseFloat(planet.circleRadius),
+          mass: parseFloat(planet.mass),
+          velocity: Body.getVelocity(planet),
+          isStatic: planet.isStatic,
+          color: planet.render.fillStyle,
+        };
+        savePlanetToSandbox(sandboxId, planetData);
+      }
+    }
+    //form.submit();
+  });
+
   function createPlanet(name, x, y, mass, radius, velocity, mode, color) {
     name = checkIsValidName(name);
     const pos = checkIsValidPosition(x, y);
@@ -222,6 +245,7 @@ window.addEventListener("DOMContentLoaded", () => {
     color = checkIsValidColor(color);
 
     const planet = Bodies.circle(pos.x, pos.y, radius, {
+      label: name,
       mass: mass,
       isStatic: mode,
       frictionAir: 0,
@@ -230,7 +254,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     Body.setVelocity(planet, velocity);
-    planet.custom = { mass, isStatic: mode };
+    planet.custom = { mass, isStatic: mode, radius };
     return planet;
   }
 
