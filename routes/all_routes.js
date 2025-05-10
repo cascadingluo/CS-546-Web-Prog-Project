@@ -105,9 +105,9 @@ router
       req.session.user = {
         signedIn: true,
         // id: get from Db
-        userId: registered._id,
-        userName: registered.userName,
-        sandboxes: registered.sandboxes,
+        userId: registered.user._id,
+        userName: registered.user.userName,
+        sandboxes: registered.user.sandboxes,
       };
 
       if (req.session.user.signedIn === true) {
