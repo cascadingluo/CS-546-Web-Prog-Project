@@ -6,38 +6,41 @@
     <title>Welcome</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<body>
 <header>
     <!-- <a ref="putpath">
         <button id ="guestSubmit">login</button>
     </a> -->
-   <a href="/logout">
+   <form action="/logout">
         <button id ="signed_in">logout</button>
-    </a>
+   </form>
      <hr>
 </header>
 
-<body>
-    <h1>Welcome</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed magna in libero volutpat tristique. Ut at massa eu mi vulputate facilisis nec et nunc. Phasellus ut gravida sapien. Mauris hendrerit sodales consectetur. Proin eget justo a elit varius aliquet vitae eu elit. Mauris et magna velit. Suspendisse gravida massa mi, eget consequat est dignissim at.</p>
-    <!-- this is the demo place holder -->
-    <!-- <img src="pictures/Screenshot 2025-04-22 215813.png" alt="place holder" id = "guest">
-    <br> -->
-    <a href="/edit">
-        <button id="create">Create new sandbox</button>
-    </a>
-    <a href="/viewSandboxes">
-        <button id="view">View Sandboxes</button>
-    </a>
-</body>
+
+    <h1 id="title">Cosmic Canvas</h1>
+    <p>Welcome, create a sandbox to save or explore your previous ones!</p>
+    <div class="containerCreate2">
+        <form action="/edit">
+            <button id="create2">Create new sandbox</button>
+        </form>
+        <form action="/viewSandboxes">
+            <button id="view">View Sandboxes</button>
+        </form>    
+    </div>
 
 <footer>
     <hr>
     <h4>About Us</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed magna in libero volutpat tristique. Ut at massa eu mi vulputate facilisis nec et nunc. Phasellus ut gravida sapien. Mauris hendrerit sodales consectetur.</p>
+    <p>Group 22</p>
     <h5>Members</h5>
-    <ul>
-        <li>Names...</li>
+    <ul id="names">
+        <li>Zachary Rosario</li>
+        <li>Annanya Jain</li>
+        <li>Nicolas Banatt</li>
+        <li>Luo Xu</li>
+        <li>Gursimran Vasir</li>
     </ul>
 </footer>
-
+</body>
 </html>

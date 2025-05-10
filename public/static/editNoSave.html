@@ -10,9 +10,9 @@
     <!-- header sections -->
     <header>
         <nav>
-            <a href = "/">
+            <form action = "/">
                 <button>home page</button>
-            </a>
+            </form>
         </nav>
     </header>
     <!-- main sign up form container -->
@@ -33,15 +33,15 @@
                     <input type="text" id="create-planet-name" name="create-planet-name"> 
                     <br>
 
-                    <label for="mass">Mass: <output id="massNum">10</output></label>
+                    <label for="massNum">Mass: <output id="massNum">10</output></label>
                     <input type="range" id="mass" name="mass" max="20" min="0" oninput="massNum.value = this.value">
                     <br>
 
-                    <label for="radius">Radius: <output id="radiusNum">10</output></label>
+                    <label for="radiusNum">Radius: <output id="radiusNum">10</output></label>
                     <input type="range" id="radius" name="radius" min="0" max="20" oninput="radiusNum.value = this.value">
                     <br>
 
-                    <label for="velocity">Velocity:</label>
+                    <p>Velocity:</p>
                     <div id="velocity">
                         <br>
                         <label for="x-axis">x-axis</label>
@@ -52,14 +52,14 @@
                         <br>
                     </div>
 
-                    <label for="static">
-                        Static
-                        <input type="radio" name="mode" id="mode" value="static" checked>
+                    <label for="mode">
+                        Dynamic?
+                        <input type="checkbox" name="mode" id="mode" value="dynamic">
                     </label>
-                    <label for="static">
+                    <!-- <label for="modeD">
                         Dynamic 
-                        <input type="radio" name="mode" id="mode" value="dynamic">
-                    </label>
+                        <input type="radio" name="modeDynamic" id="modeD" value="dynamic">
+                    </label> -->
                     <br>
 
                     <label for="planet-color">Color:</label>
@@ -73,14 +73,16 @@
                         <option value="circle"> Circle </option>
                         <option value="oval"> Oval </option>
                     </select>   -->
-                    <p id="error" hidden></p> 
                 </fieldset>
-                
+                <p id="error" hidden></p> 
             </form>
         </section>
     </main>
     <footer></footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script> //this should allow dynamically replacing on the backend
+        const sandboxId = "{{SANDBOX_ID}}";
+    </script>
     <script src="/js/sim.js"></script>
     <script src="/js/edit_process.js"></script>
 </body>

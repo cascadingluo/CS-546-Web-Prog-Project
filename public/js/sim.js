@@ -15,7 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const yVelocityInput = document.getElementById("y-axis");
   const massInput = document.getElementById("mass");
   const radiusInput = document.getElementById("radius");
-  const modeInputs = document.getElementsByName("mode");
+  const modeInput = document.getElementById("mode");
   const colorInput = document.getElementById("planet-color");
   const error = document.getElementById("error");
 
@@ -97,8 +97,10 @@ window.addEventListener("DOMContentLoaded", () => {
       const vel_y = yVelocityInput.value;
       const mass = massInput.value;
       const radius = radiusInput.value;
-      const mode = Array.from(modeInputs).find((input) => input.checked).value;
+      const mode = !modeInput.checked;
       const color = colorInput.value;
+
+      console.log(mode);
 
       let planet;
       try {
@@ -256,7 +258,7 @@ window.addEventListener("DOMContentLoaded", () => {
     mass = checkIsValidMass(mass);
     radius = checkIsValidRadius(radius);
     velocity = checkIsValidVelocity(velocity);
-    mode = checkIsValidMode(mode);
+    // mode = checkIsValidMode(mode); 
     color = checkIsValidColor(color);
 
     const planet = Bodies.circle(pos.x, pos.y, radius, {
@@ -377,13 +379,6 @@ function checkIsValidRadius(radius) {
     throw "Radius: Supply a number";
   if (radius <= 0) throw "Radius: Cannot be less than or equal to zero";
   return radius;
-}
-
-function checkIsValidMode(mode) {
-  mode = mode.trim();
-  if (mode !== "static" && mode !== "dynamic")
-    throw "Mode: Supply either static or dynamic!";
-  return mode === "static";
 }
 
 function checkIsValidVelocity(velocity) {

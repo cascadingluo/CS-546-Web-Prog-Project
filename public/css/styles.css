@@ -8,6 +8,74 @@ body {
 header {
     margin: 20px;
 }
+/* index and indexSignedIN */
+
+#title{
+    padding: 1% 2%;
+    /* color: #FFFD93; */
+    color: white;
+    text-align: center;
+}
+#guestDemo{
+    display: block;
+    margin: auto;
+    width: 50%;
+}
+.containerCreate{
+  position: relative;
+  left: 45%;
+}
+.containerCreate2{
+  display: flex;
+  position: relative;
+  left: 45%;
+}
+.headerButtons{
+    display: flex;
+    justify-content:first baseline;
+    gap: 1%;
+    margin-top: 4%;
+    
+}
+#guestSubmit{
+    /* margin-right: 2%; */
+    padding: 1% 2%;
+}
+#signup{
+    padding: 1% 2%;
+}
+
+.headerGal{
+  display: flex;
+    justify-content:first baseline;
+    gap: 1%;
+    margin-top: 4%;
+}
+
+#create2{
+    text-align: center;
+     margin-right: 5%;
+}
+#view{
+    text-align: center;
+    margin-top: 2%;
+}
+hr{
+   border: 1px solid  #FFFD93; 
+}
+/* gallery views */
+.galButtons{
+    display: flex;
+}
+#editGal{
+     margin-bottom: 1%;
+     padding: 1% 2%;
+}
+#nameLi{
+    color:#FFFD93;
+    text-underline-offset: auto;
+    font-weight: bold
+}
 
 #use_guest, #sign-up-but {
     margin-left: 3%;
@@ -18,13 +86,23 @@ header {
     border-radius: 2%;
     cursor: pointer;
 }
-
+#backTwoHome{
+    margin-top: 1%;
+}
 button:hover {
     background-color: #3C1478;
+    padding:1% 2%;
+    text-align: center;
+    color: #BCC8FA;
 }
 
-button::after {
+button{
     background-color: #BCC8FA;
+    padding: 1% 2%;
+    color: #3C1478;
+    border: none;
+    text-align: center;
+    
 }
 
 #error {

@@ -25,7 +25,7 @@ async function gettingSandboxes() {
     // let sandboxes = getSandboxNames(user)
     var result = "";
     sandboxes.forEach(function (item) {
-      result += "<li>" + item.name + `<a href =${item.edit}><button>Edit</button></a><a href =${item.view}><button>View</button></a>` + "Share Link:" + item.share+ '</li>';
+      result += `<li id="nameLi">` + item.name + `<br><form action =${item.edit} ><button id="editGal">Edit</button></form><form action =${item.view} id="viewGal"><button>View</button><br></form>` + "Share Link: " + item.share+ '</li>';
     });
     
    l.innerHTML = result;
