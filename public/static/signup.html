@@ -20,16 +20,16 @@
             <h1> sign up </h1>
             <form id="signup_form" action="/signup" method="POST" novalidate>
 
-                <label for="username">username</label>
+                <label for="create_username">username</label>
                 <input type="text" id="create_username" name="create_username">
 
                 <label for="email">email</label>
                 <input type="email" id="email" name="email">
 
-                <label for="password">password</label>
+                <label for="create_password">password</label>
                 <input type="password" id="create_password" name="create_password">
 
-                <label for="password_again">password again</label>
+                <label for="rep_pass">password again</label>
                 <input type="password" id="rep_pass" name="rep_pass">
 
                 <label for="age">age</label>
@@ -37,15 +37,15 @@
 
                 <p id="error" hidden></p> 
                 <!-- shows below the password and checks for empty and exists -->
-
-                <div>
-                    <a href="/">
-                        <button type="button">back to home</button>
-                    </a>
-                    <button type="submit">log in</button>
-                </div>
-
+                <br>
+                <button type="submit">log in</button>
             </form>
+                <div>
+                    <form action="/">
+                        <button id="backTwoHome">back to home</button>
+                    </form>
+                    
+                </div>
         </section>
     </main>
     <footer></footer>

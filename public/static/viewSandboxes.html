@@ -6,19 +6,21 @@
     <title>View Sandboxes</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<body>
 <header>
-    <a href ="/">
+    <div class="headerGal">
+    <form action ="/">
         <button id="home">Home</button>
-    </a>
-    <a href="/logout"> 
+    </form>
+    <form action="/logout"> 
         <button id="signed_in">Logout</button>
-    </a>
+    </form>
+    </div>
      <hr>
 </header>
 
-<body>
-    <h1>Sandboxes</h1>
-    <p>click to view sandbox</p>
+    <h1 id="title">Sandboxes</h1>
+    <p>Click to view sandbox.</p>
     <!-- <p> -->
         <ol id="sandboxes"></ol>
     <!-- </p> -->

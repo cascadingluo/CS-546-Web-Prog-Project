@@ -20,22 +20,21 @@
             <h1> log in </h1>
             <form id="login_form" action="/login" method="POST" novalidate>
 
-                <label for="username">username</label>
+                <label for="login_username">username</label>
                 <input type="text" id="login_username" name="login_username">
 
-                <label for="password">password</label>
+                <label for="login_password">password</label>
                 <input type="password" id="login_password" name="login_password">
 
                 <p id="error" hidden></p> 
 
                 <div>
-                    <a href="/">
-                        <button type="button">back to home</button>
-                    </a>
                     <button type="submit">log in</button>
                 </div>
-
             </form>
+                <form action="/">
+                    <button id="backTwoHome">back to home</button>
+                </form>
         </section>
     </main>
     <footer></footer>

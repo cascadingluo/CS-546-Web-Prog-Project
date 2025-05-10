@@ -6,41 +6,50 @@
     <title>Welcome</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<body>
 <header>
-    <a href="/login">
+    <div class="headerButtons">
+    <form action="/login">
         <button id ="guestSubmit">login</button>
-    </a>
+    </form>
     <!-- <a ref="putpath">
         <button id ="signed_in">login</button>
     </a> -->
-    <a href="/signup">
+    <form action="/signup">
         <button id ="signup">signup</button>
-    </a>
+    </form>
+    </div>
+    <hr>
 </header>
 
-<body>
-    <h1>Welcome</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed magna in libero volutpat tristique. Ut at massa eu mi vulputate facilisis nec et nunc. Phasellus ut gravida sapien. Mauris hendrerit sodales consectetur. Proin eget justo a elit varius aliquet vitae eu elit. Mauris et magna velit. Suspendisse gravida massa mi, eget consequat est dignissim at.</p>
+
+    <h1 id="title">Cosmic Canvas</h1>
+    <p>Welcome, sign in to create a sandbox to save or explore around in guest mode!</p>
     <!-- this is the demo place holder -->
-    <img src="/pictures/Screenshot 2025-04-22 215813.png" alt="place holder" id = "guest">
+    <img src="/static/pictures/demo.gif" alt="Demo of planet place and simulation" id = "guestDemo">
     <br>
-    <a href="/edit">
-        <button id="create">Create new sandbox</button>
-    </a>   
+    <div class="containerCreate">
+        <form action="/edit">
+             <button id="create">Create Guest Sandbox</button>
+        </form> 
+    </div>
+  
     
     <!-- <a href="veiwSandboxes.html">
         <button id="view">View Sandboxes</button>
     </a> -->
-</body>
-
 <footer>
     <hr>
     <h4>About Us</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed magna in libero volutpat tristique. Ut at massa eu mi vulputate facilisis nec et nunc. Phasellus ut gravida sapien. Mauris hendrerit sodales consectetur.</p>
+    <p>Group 22</p>
     <h5>Members</h5>
-    <ul>
-        <li>Names...</li>
+    <ul id="names">
+        <li>Zachary Rosario</li>
+        <li>Annanya Jain</li>
+        <li>Nicolas Banatt</li>
+        <li>Luo Xu</li>
+        <li>Gursimran Vasir</li>
     </ul>
 </footer>
-
+</body>
 </html>
