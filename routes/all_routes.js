@@ -3,7 +3,10 @@ import { sandboxes } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import { register } from "../data/users.js";
 import { login } from "../data/users.js";
-import { createSandboxForUser } from "../data/sandboxes.js";
+import {
+  createSandboxForUser,
+  updateAllPlanetsInSandbox,
+} from "../data/sandboxes.js";
 // import {renderList} from "../public/js/listForEdit.js"
 import {
   updateSandboxName,
@@ -202,34 +205,36 @@ router
   .post(async (req, res) => {
     const sandboxId = req.params.SandboxId;
     try {
-      const {
-        sandboxName,
-        planetName,
-        x,
-        y,
-        radius,
-        mass,
-        velocity,
-        isStatic,
-        color,
-      } = req.body;
+      // const {
+      //   sandboxName,
+      //   planetName,
+      //   x,
+      //   y,
+      //   radius,
+      //   mass,
+      //   velocity,
+      //   isStatic,
+      //   color,
+      // } = req.body;
 
-      const planet = {
-        sandboxName,
-        planetName,
-        x,
-        y,
-        radius,
-        mass,
-        velocity,
-        isStatic,
-        color,
-      };
+      // const planet = {
+      //   sandboxName,
+      //   planetName,
+      //   x,
+      //   y,
+      //   radius,
+      //   mass,
+      //   velocity,
+      //   isStatic,
+      //   color,
+      // };
+      const { sandboxName, planetsData } = req.body;
+      // TODO: Error check req.body
       await updateSandboxName(sandboxId, sandboxName);
-      await createPlanetInSandbox(sandboxId, planet, planetName);
-      res.json({ message: "Planet saved successfully" });
+      await updateAllPlanetsInSandbox(sandboxId, planetsData);
+      res.json({ message: "Planets saved successfully" });
     } catch (e) {
-      console.error("Planet saved unsucessfully:", e);
+      console.error("Planets saved unsucessfully:", e);
       res.status(400).json({ error: e.toString() });
     }
   });

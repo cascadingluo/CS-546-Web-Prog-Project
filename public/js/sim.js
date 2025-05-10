@@ -217,10 +217,10 @@ window.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const sandboxName = sandboxNameInput.value.trim();
     if (typeof sandboxId !== "undefined") {
-      for (const planet of planets) {
-        const planetData = {
-          sandboxName,
-          planetName: planet.label,
+      // Convert from matter.js body to database representation
+      const planetsData = planets.map((planet) => {
+        return {
+          name: planet.label,
           x: planet.position.x,
           y: planet.position.y,
           radius: parseFloat(planet.circleRadius),
@@ -229,8 +229,23 @@ window.addEventListener("DOMContentLoaded", () => {
           isStatic: planet.isStatic,
           color: planet.render.fillStyle,
         };
-        savePlanetToSandbox(sandboxId, planetData);
-      }
+      });
+      savePlanetsToSandbox(sandboxId, sandboxName, planetsData);
+
+      // for (const planet of planets) {
+      //   const planetData = {
+      //     sandboxName,
+      //     planetName: planet.label,
+      //     x: planet.position.x,
+      //     y: planet.position.y,
+      //     radius: parseFloat(planet.circleRadius),
+      //     mass: parseFloat(planet.mass),
+      //     velocity: Body.getVelocity(planet),
+      //     isStatic: planet.isStatic,
+      //     color: planet.render.fillStyle,
+      //   };
+      //   savePlanetToSandbox(sandboxId, planetData);
+      // }
     }
     //form.submit();
   });
@@ -258,27 +273,31 @@ window.addEventListener("DOMContentLoaded", () => {
     return planet;
   }
 
-  async function savePlanetToSandbox(sandboxId, planetData) {
-    //sends new planet to the server
+  // planetsData: List of database planet objects
+  async function savePlanetsToSandbox(sandboxId, sandboxName, planetsData) {
+    //sends new planets to the server
     try {
       const response = await fetch(`/edit/${sandboxId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(planetData),
+        body: JSON.stringify({
+          sandboxName,
+          planetsData,
+        }),
       });
       const result = await response.json();
       if (!response.ok) {
-        console.error("unable to save the planet:", result);
+        console.error("unable to save the planets:", result);
         error.hidden = false;
         error.innerHTML = result.error;
       } else {
-        console.log("planet was sucessfully saved");
+        console.log("planets were sucessfully saved");
       }
     } catch (e) {
       error.hidden = false;
-      error.innerHTML = "failed to save planet";
+      error.innerHTML = "failed to save planets";
     }
   }
 
