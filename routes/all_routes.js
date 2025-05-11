@@ -246,14 +246,27 @@ router.route("/logout").get(async (req, res) => {
 
 router.route("/view/:SandboxId").get(async (req, res) => {
   // TO DO: SAND BOXES MUST BE LOADED FIRST
+  const sandboxId = req.params.SandboxId;
   if (req.session.user && req.session.user.signedIn === true) {
-    res.sendFile(
-      path.resolve(__dirname, "../public/static/viewSimSignedIn.html")
-    );
+    const filePath = path.resolve(__dirname, "../public/static/viewSimSignedIn.html");  
+    fs.readFile(filePath, "utf8", (error, html) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Internal Server Error");
+      }
+      const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
+      res.send(renderHTML)});
   } else {
-    res.sendFile(path.resolve(__dirname, "../public/static/viewSim.html"));
-  }
-});
+    const filePath = path.resolve(__dirname, "../public/static/viewSim.html");  
+    fs.readFile(filePath, "utf8", (error, html) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Internal Server Error");
+      }
+      const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
+      res.send(renderHTML)});
+  }}
+);
 
 router.route("/api/sandbox/:SandboxId").get(async (req, res) => {
   try {
