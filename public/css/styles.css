@@ -70,7 +70,7 @@ hr{
     margin: 5px 0;
 }
 
-.galBtn {
+#galBtn {
     min-width: 80px;
     margin: 5px 5px 5px 0;
     cursor: pointer;
@@ -81,15 +81,17 @@ hr{
     text-align: center;
   }
   
-.galBtn:hover {
+#galBtn:hover {
     background-color: #3C1478;
-    color: #BCC8FA;
+    padding:1% 2%;
+    text-align: center;
+    color: #BCC8FA;    
 }
   
-#editGal{
+/* #editGal{
      margin-bottom: 1%;
      padding: 1% 2%;
-}
+} */
 #nameLi{
     color:#FFFD93;
     text-underline-offset: auto;
@@ -108,21 +110,21 @@ hr{
 #backTwoHome{
     margin-top: 1%;
 }
-/* button:hover {
+button:hover {
     background-color: #3C1478;
     padding:1% 2%;
     text-align: center;
     color: #BCC8FA;
-} */
+}
 
-/* button{
+button{
     background-color: #BCC8FA;
     padding: 1% 2%;
     color: #3C1478;
     border: none;
     text-align: center;
     
-} */
+}
 
 #error {
     color: red;
