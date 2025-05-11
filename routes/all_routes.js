@@ -54,7 +54,7 @@ router
       const password = req.body.login_password;
       const loggedin = await login(userId, password);
       if (!loggedin) {
-        throw new Error("ADD ERR");
+        return res.status(400).json({ error: "Username or password is incorrect." });
       }
       req.session.user = {
         signedIn: true,
@@ -66,14 +66,14 @@ router
       //finish for render
       // res.redirect('/private');
       if (req.session.user.signedIn === true) {
-        res.redirect("/");
+        return res.status(200).json({ message: "Login successful" });
       } else {
-        res.redirect("/login");
+        return res.status(400).json({ error: "Login failed" });
       }
     } catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
-      res.redirect("/login");
+      return res.status(500).json({ error: "Login unsuccessful" });
     }
   });
 
@@ -82,7 +82,7 @@ router
   .route("/signup")
   .get(async (req, res) => {
     if (!req.session.user || req.session.user.signedIn === false) {
-      res.sendFile(path.resolve(__dirname, "../public/static/signup.html"));
+      res.sendFile(path.resolve(__dirname, "../public/static/signup.html")); 
     } else {
       res.redirect("/");
     }
@@ -94,13 +94,18 @@ router
       const password = req.body.create_password;
       const p2 = req.body.rep_pass;
       if (password !== p2) {
-        throw new Error("Passwords dont match");
+        return res.status(400).json({ error: "Passwords do not match." });
       }
       const age = Number(req.body.age);
       const email = req.body.email;
+      const usersCollection = await users();
+      const exist = await usersCollection.findOne({ userId: userId.toLowerCase() });
+      if (exist) {
+        return res.status(400).json({ error: "Username already exists, please chose another username" });
+      }
       const registered = await register(userId, email, age, password);
       if (!registered) {
-        throw new Error("Could not register");
+        return res.status(500).json({ error: "Register user unsuccessful" });
       }
       req.session.user = {
         signedIn: true,
@@ -110,13 +115,15 @@ router
         sandboxes: registered.user.sandboxes,
       };
 
-      if (req.session.user.signedIn === true) {
-        res.redirect("/");
-      }
+      // if (req.session.user.signedIn === true) {
+      //   res.redirect("/");
+      // }
+      return res.status(200).json({ message: "User registered successfully" });
     } catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
       res.redirect("/signup");
+      return res.status(500).json();
     }
   });
 
