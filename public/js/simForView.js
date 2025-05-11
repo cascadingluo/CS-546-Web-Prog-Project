@@ -1,5 +1,6 @@
 const G = 6.6743e-3; // Graitational constant (stronger by 10^7 than irl to speed up sim and make numbers smaller)
 
+window.addEventListener("DOMContentLoaded", () => {
 const {
     Engine,
     Render,
@@ -30,8 +31,6 @@ const {
   });
 
   const planets = [];
-  World.add(world, planets);
-
 
   Events.on(engine, "beforeUpdate", function (event) {
     let netForces = planets.map(() => ({ x: 0, y: 0 }));
@@ -68,6 +67,10 @@ const {
     }
   });
 
+  Render.run(render);
+  const runner = Runner.create({});
+  Runner.run(runner, engine);
+
   fetch(`/api/sandbox/${sandboxId}`) //makes GET request to the server
     .then((res) => res.json())
     .then((data) => {
@@ -88,6 +91,7 @@ const {
             );
             planets.push(planet);
             World.add(world, planet);
+            console.log(planets);
           } catch (e) {
             console.error("failed to load planet:", p.name, e);
           }
@@ -97,9 +101,7 @@ const {
     .catch((err) => {
       console.error("Failed to load sandbox planets:", err);
     });
-  Render.run(render);
-  const runner = Runner.create({});
-  Runner.run(runner, engine);
+
   function createPlanet(name, x, y, mass, radius, velocity, mode, color) {
     name = checkIsValidName(name);
     const pos = checkIsValidPosition(x, y);
@@ -181,3 +183,5 @@ function checkIsValidColor(color) {
     throw "Color: Must be in the form #000000 - #FFFFFF";
   return color.toUpperCase();
 }
+document.getElementById("editForView").action=`/edit/${sandboxId}`;
+});

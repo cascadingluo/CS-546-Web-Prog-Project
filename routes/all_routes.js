@@ -134,7 +134,7 @@ router.route("/viewSandboxes").get(checkSignIn, async (req, res) => {
 
 router.route("/getSandboxesInfo").get(checkSignIn, async (req, res) => {
   if (req.session.user && req.session.user.signedIn === true) {
-    let sandboxesList = await getSandboxNames(req.session.user.userId);
+    let sandboxesList = await getSandboxNames(req.protocol, req.get('host') , req.session.user.userId);
     // let sandboxesList =[{
     //   name: "Test Sandbox",
     //   edit: "/edit/663c8d530f1c4a2c40f8c0a1",
@@ -288,17 +288,18 @@ function checkSignIn(req, res, next) {
   }
 }
 
-async function getSandboxNames(user) {
+async function getSandboxNames(protocol, host, user) {
   //i changed this to an async function
   let ret = [];
   let sandboxesLi = await getSandboxesbyUserId(user); //this should be await as well i think
   for (let i = 0; i < sandboxesLi.length; i++) {
+    //  let shorter = full.replace("/viewSandboxes", ""); 
     ret.push({
       name: sandboxesLi[i].sandbox_name,
       edit: `/edit/${sandboxesLi[i]._id}`,
       view: `/view/${sandboxesLi[i]._id}`,
       // Change localhost:3000?
-      share: `http://localhost:3000/view/${sandboxesLi[i]._id}`,
+      share: `${protocol}://${host}/view/${sandboxesLi[i]._id}`,
     });
   } //i also changed this to push instead of append it was giving me an error for append?
   return ret;
