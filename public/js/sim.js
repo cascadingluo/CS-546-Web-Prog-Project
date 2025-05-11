@@ -1,4 +1,4 @@
-const G = 6.6743e-3; // Graitational constant (stronger by 10^7 than irl to speed up sim and make numbers smaller)
+const G = 6.6743e-3; 
 
 //Common formula for finding perfect orbit velocity
 //I took out G because mass and radius are not probably scared so it just works better w/o and a bit of magic number
@@ -50,7 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  //FOR TESTING ONLY, CHANGE LATER
   const sunMass = 1000;
   const sunRadius = 30;
   const centerX = canvas.offsetWidth / 2;
@@ -63,7 +62,7 @@ window.addEventListener("DOMContentLoaded", () => {
       sunMass,
       sunRadius,
       { x: 0, y: 0 },
-      "static",
+      true,
       "#FFFF00"
     ),
   ];
@@ -85,7 +84,7 @@ window.addEventListener("DOMContentLoaded", () => {
   World.add(world, mouseConstraint);
   render.mouse = mouse;
 
-  Events.on(mouseConstraint, "mousedown", function (event) {
+  Events.on(mouseConstraint, "mouseup", function (event) {
     if (mouseConstraint.body) return;
 
     const mousePos = event.mouse.position;
@@ -199,7 +198,7 @@ window.addEventListener("DOMContentLoaded", () => {
               p.mass,
               p.radius,
               p.velocity || { x: 0, y: 0 },
-              p.isStatic ? "static" : "dynamic",
+              p.isStatic,
               p.color
             );
             planets.push(planet);
