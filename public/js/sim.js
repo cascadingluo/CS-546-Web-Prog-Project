@@ -1,7 +1,6 @@
 const G = 6.6743e-3; 
 
 //Common formula for finding perfect orbit velocity
-//I took out G because mass and radius are not probably scared so it just works better w/o and a bit of magic number
 function orbitVelocity(radius, centralMass) {
   return Math.sqrt(centralMass / radius);
 }
@@ -50,22 +49,8 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  const sunMass = 1000;
-  const sunRadius = 30;
-  const centerX = canvas.offsetWidth / 2;
-  const centerY = canvas.offsetHeight / 2;
-  const planets = [
-    createPlanet(
-      "Sun",
-      centerX,
-      centerY,
-      sunMass,
-      sunRadius,
-      { x: 0, y: 0 },
-      true,
-      "#FFFF00"
-    ),
-  ];
+
+  const planets = [];
 
   World.add(world, planets);
 
@@ -77,7 +62,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
     constraint: {
-      stiffness: 0.3, //https://brm.io/matter-js/docs/classes/Constraint.html#property_stiffness
+      stiffness: 0, //https://brm.io/matter-js/docs/classes/Constraint.html#property_stiffness
       render: { visible: false }, //Blocks line that default show when dragging
     },
   });
@@ -140,6 +125,36 @@ window.addEventListener("DOMContentLoaded", () => {
       //   savePlanetToSandbox(sandboxId, planetData);
       // }
     }
+  });
+
+  Events.on(mouseConstraint, "mousedown", function (event) {
+    if (!mouseConstraint.body) return;
+
+    const planet = mouseConstraint.body;
+    
+    try {
+      //https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm
+      //https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt
+      const name = prompt("New Name:", planet.label);
+      name = checkIsValidName(name);
+      const mass = prompt("New Mass:", planet.custom.mass);
+      mass = checkIsValidMass(mass);
+      const radius = prompt("New Radius:", planet.circleRadius);
+      radius = checkIsValidRadius(radius);
+      const vel_x = prompt("New X Velocity:", planet.velocity.x);
+      const vel_y = prompt("New Y Velocity:", planet.velocity.y);
+      vel_y = checkIsValidVelocity({ x: vel_x, y: vel_y });
+      const mode = confirm("Make static?") ? true : false;
+      const color = prompt("New Color Hex:", planet.render.fillStyle);
+      color = checkIsValidColor(color);
+    } catch(e) {
+        return;
+    }
+
+    prompt("Click new position or wait.");
+    
+
+
   });
 
   Events.on(engine, "beforeUpdate", function (event) {
@@ -227,7 +242,7 @@ window.addEventListener("DOMContentLoaded", () => {
           radius: parseFloat(planet.circleRadius),
           mass: parseFloat(planet.mass),
           velocity: Body.getVelocity(planet),
-          isStatic: planet.isStatic,
+          isStatic: planet.custom.isStatic,
           color: planet.render.fillStyle,
         };
       });
@@ -344,7 +359,17 @@ window.addEventListener("DOMContentLoaded", () => {
   //     error.innerHTML = e;
   //   }
   // }
+  //https://stackoverflow.com/questions/9880279/how-do-i-add-a-simple-onclick-event-handler-to-a-canvas-element
+  async function waitForClick() {
+    return new Promise((resolve) => {
+      canvas.addEventListener("click", function handler(event) {
+        canvas.removeEventListener("click", handler);
+        resolve(event);
+      });
+    });
+  }
 });
+
 
 // Check if string is not empty or just space and trims it
 function checkIsValidString(str, argName) {
