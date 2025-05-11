@@ -44,8 +44,8 @@ window.deleteSandbox = deleteSandbox;
       result += `<li id="nameLi"> ${item.name} <br>
           <div class="galButtons">
             <form action="${item.edit}"><button id="galBtn">Edit</button></form>
-            <form action="${item.view}"><button id="galBtn">View</button><br></form><br>
-            <button id="galBtn" onclick="deleteSandbox('${sandboxId}')">Delete</button><br>
+            <form action="${item.view}"><button id="galBtn">View</button><br></form>
+            <form><button id="galBtn" onclick="deleteSandbox('${sandboxId}')">Delete</button><form><br>
           </div>
           Share Link: ${item.share} </li>`;
     });
