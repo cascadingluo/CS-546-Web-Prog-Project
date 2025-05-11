@@ -155,6 +155,9 @@ window.addEventListener("DOMContentLoaded", () => {
       color = prompt("New Color Hex:", planet.render.fillStyle);
       color = checkIsValidColor(color);
     } catch(e) {
+        setTimeout(() => {
+          editPlanet = false;
+        }, 100);
         return;
     }
     planet.label = name;
