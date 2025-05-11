@@ -130,6 +130,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
   Events.on(mouseConstraint, "mousedown", async function (event) {
     if (!mouseConstraint.body) return;
     if (editPlanet) return;
@@ -156,7 +157,6 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch(e) {
         return;
     }
-
     planet.label = name;
     planet.custom.mass = mass;
     Body.setMass(planet, mass);

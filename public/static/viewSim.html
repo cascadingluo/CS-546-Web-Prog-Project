@@ -3,20 +3,28 @@
     
 <head>
     <meta charset="utf-8">
-    <title>View your Simulation</title>
+    <title>View Simulation</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<body>
 <header>
     <!-- if guest name is guest trial -->
-    <a href ="/">
+    <form action ="/">
         <button id="home">Home</button>
-    </a>
+    </form>
 </header>
-<body>
     <!-- placeholder for simulaton -->
     <!-- <canvas id="placeholder" width="10" height="10"></canvas> -->
-    <canvas id="sandbox"></canvas>
-    <!-- only allowed for signed in -->
-     <!-- http://w3schools.com/howto/howto_js_popup.asp -->
-</body>
+      <main>
+     <div id="main-canvas2">
+        <div id="canvas"></div> 
+    </div>          
+ </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script> //this should allow dynamically replacing on the backend
+        const sandboxId = "{{SANDBOX_ID}}";
+    </script>
+    <script src="/js/simForView.js"></script>
+    <!-- <script src="/js/edit_process.js"></script> -->
+    </body>
 </html>
