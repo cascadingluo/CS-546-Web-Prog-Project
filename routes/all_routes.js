@@ -5,6 +5,7 @@ import { register } from "../data/users.js";
 import { login } from "../data/users.js";
 import {
   createSandboxForUser,
+  removeSandbox,
   updateAllPlanetsInSandbox,
 } from "../data/sandboxes.js";
 // import {renderList} from "../public/js/listForEdit.js"
@@ -300,6 +301,20 @@ router.route("/view/:SandboxId").get(async (req, res) => {
       res.send(renderHTML)});
   }}
 );
+
+router.route("/delete/:SandboxId").delete(checkSignIn, async (req, res) => {
+  const sandboxId = req.params.SandboxId;
+  const userId = req.session.user.userId;
+  //console.log(`deleting sandbox with id ${sandboxId} for user ${userId}`);
+  try{
+    await removeSandbox(userId, sandboxId);
+    res.status(200).json({message: "Sandbox deleted"});
+  }
+  catch(e){
+    console.log("error deletting sandbox", e);
+    res.status(500).json({error: e.toString()});
+  }
+});
 
 router.route("/api/sandbox/:SandboxId").get(async (req, res) => {
   try {
