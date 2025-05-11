@@ -19,6 +19,7 @@ import fs from "fs";
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
 import path from "path";
 import { fileURLToPath } from "url";
+import { ObjectId } from "mongodb";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -193,22 +194,47 @@ router
     }
   });
 
-router
-  .route("/edit/:SandboxId")
-  .get(async (req, res) => {
-    //load the planets <-- Zach will do this
-    //load the page
-    const sandboxId = req.params.SandboxId;
-    const filePath = path.resolve(__dirname, "../public/static/edit.html");
-    fs.readFile(filePath, "utf8", (error, html) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).send("Internal Server Error");
+  router.route("/edit/:SandboxId").get(async (req, res) => {
+    try {
+      const sandboxId = req.params.SandboxId;
+      const userId = req.session.user.userId;
+
+      if (req.session.user.sandboxes.includes(sandboxId)) {
+        const filePath = path.resolve(__dirname, "../public/static/edit.html");
+        fs.readFile(filePath, "utf8", (error, html) =>{
+          if (error) {
+            console.error(error);
+            return res.status(500).send("Internal Server Error");
+          }
+          const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
+          return res.send(renderHTML);
+      });
+    }
+    else{
+      const originalSandbox = await getSandboxesById(sandboxId);
+      if (!originalSandbox) {
+        return res.status(404).send("Original sandbox not found.");
       }
-      const renderHTML = html.replace("{{SANDBOX_ID}}", sandboxId);
-      res.send(renderHTML);
-    });
-  })
+      let copiedName = originalSandbox.sandbox_name + " Copy";
+      if (copiedName.length > 20) copiedName = "Copied Sandbox";
+      const { sandboxId: newSandboxId } = await createSandboxForUser(userId, copiedName);
+  
+      for (const planet of originalSandbox.planets) {
+        try {
+          await createPlanetInSandbox(newSandboxId, planet, planet.name);
+        } catch (e) {
+          console.error(`Failed to copy planet ${planet.name}:`, e);
+        }
+      }
+      req.session.user.sandboxes.push(newSandboxId);
+
+      return res.redirect(`/edit/${newSandboxId}`);
+    }
+  } catch (e) {
+      console.error("Error in get route /edit/:SandboxId:", e);
+      return res.status(500).send("Server error");
+    }
+  })  
   .post(async (req, res) => {
     const sandboxId = req.params.SandboxId;
     try {
