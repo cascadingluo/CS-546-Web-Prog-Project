@@ -5,6 +5,8 @@ function orbitVelocity(radius, centralMass) {
   return Math.sqrt(centralMass / radius);
 }
 
+let editPlanet = false;
+
 window.addEventListener("DOMContentLoaded", () => {
   // DOM setup
   const form = document.getElementById("editing_form");
@@ -71,6 +73,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   Events.on(mouseConstraint, "mouseup", function (event) {
     if (mouseConstraint.body) return;
+    if (editPlanet) return;
 
     const mousePos = event.mouse.position;
 
@@ -127,34 +130,45 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  Events.on(mouseConstraint, "mousedown", function (event) {
+
+  Events.on(mouseConstraint, "mousedown", async function (event) {
     if (!mouseConstraint.body) return;
+    if (editPlanet) return;
+    editPlanet = true;
 
     const planet = mouseConstraint.body;
     
+    let name, mass, radius, vel_x, vel_y, vel, mode, color;
     try {
       //https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm
       //https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt
-      const name = prompt("New Name:", planet.label);
+      name = prompt("New Name:", planet.label);
       name = checkIsValidName(name);
-      const mass = prompt("New Mass:", planet.custom.mass);
+      mass = prompt("New Mass:", planet.custom.mass);
       mass = checkIsValidMass(mass);
-      const radius = prompt("New Radius:", planet.circleRadius);
+      radius = prompt("New Radius:", planet.circleRadius);
       radius = checkIsValidRadius(radius);
-      const vel_x = prompt("New X Velocity:", planet.velocity.x);
-      const vel_y = prompt("New Y Velocity:", planet.velocity.y);
-      vel_y = checkIsValidVelocity({ x: vel_x, y: vel_y });
-      const mode = confirm("Make static?") ? true : false;
-      const color = prompt("New Color Hex:", planet.render.fillStyle);
+      vel_x = prompt("New X Velocity:", planet.velocity.x);
+      vel_y = prompt("New Y Velocity:", planet.velocity.y);
+      vel = checkIsValidVelocity({ x: vel_x, y: vel_y });
+      mode = confirm("Click ok to make static cancel for dynamic") ? true : false; //i think this returns a booloean but you can never be sure...
+      color = prompt("New Color Hex:", planet.render.fillStyle);
       color = checkIsValidColor(color);
     } catch(e) {
         return;
     }
+    planet.label = name;
+    planet.custom.mass = mass;
+    Body.setMass(planet, mass);
+    planet.custom.isStatic = mode;
+    planet.isStatic = mode;
+    planet.circleRadius = radius;
+    Body.setVelocity(planet, vel);
+    planet.render.fillStyle = color;
 
-    prompt("Click new position or wait.");
-    
-
-
+    setTimeout(() => {
+      editPlanet = false;
+    }, 100);
   });
 
   Events.on(engine, "beforeUpdate", function (event) {
@@ -285,7 +299,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     Body.setVelocity(planet, velocity);
-    planet.custom = { mass, isStatic: mode, radius };
+    planet.custom = { mass, isStatic: mode };
     return planet;
   }
 
@@ -364,7 +378,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return new Promise((resolve) => {
       canvas.addEventListener("click", function handler(event) {
         canvas.removeEventListener("click", handler);
-        resolve(event);
+        resolve({ x: mouse.position.x, y: mouse.position.y });
       });
     });
   }

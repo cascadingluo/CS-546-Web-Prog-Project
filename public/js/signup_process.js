@@ -11,7 +11,7 @@ let ageInput = document.getElementById('age');
 let error = document.getElementById('error');
 
 if (form) {
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
 
         event.preventDefault();
         //i dont think we should trim the password and user?
@@ -143,6 +143,34 @@ if (form) {
             return;
         }
         
-        form.submit();
+        // form.submit(); commented out to attempt AJAX
+        try {
+            const response = await fetch('/signup', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                create_username: username,
+                email: email,
+                create_password: password,
+                rep_pass: rep_pass,
+                age: age
+              })
+            });
+        
+            const result = await response.json();
+        
+            if (!response.ok) {
+              error.hidden = false;
+              error.innerHTML = result.error;
+            } else {
+              window.location.href = '/'; 
+            }
+          } catch (e) {
+            error.hidden = false;
+            error.innerHTML = 'Email or Username already exists.';
+          }
+
     });
 }
