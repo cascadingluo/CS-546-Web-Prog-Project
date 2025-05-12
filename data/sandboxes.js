@@ -48,9 +48,10 @@ export const createPlanetInSandbox = async (sandboxId, planet_object, name) => {
   const { x, y, radius, mass, isStatic, color, velocity } = planet_object;
 
   name = helper.checkIsProperName(name, "planet");
-  if (typeof x !== "number" || typeof y !== "number") throw "Invalid Position";
-  if (typeof radius !== "number" || radius <= 0) throw "Invalid radius";
-  if (typeof mass !== "number" || mass <= 0) throw "Invalid mass";
+  if (typeof x !== "number" || isNaN(x)) throw "Invalid Position x";
+  if (typeof y !== "number" || isNaN(y)) throw "Invalid Position y";
+  if (typeof radius !== "number" || radius <= 0 || isNaN(radius)) throw "Invalid radius: must be a valid number greater than 0";
+  if (typeof mass !== "number" || mass <= 0 || isNaN(mass)) throw "Invalid mass: must be a valid number greater than 0";
   if (typeof isStatic !== "boolean") throw "isStatic must be of type boolean";
   if (typeof color !== "string" || !color) throw "color must be a string type";
   var hexaPattern = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
@@ -59,8 +60,8 @@ export const createPlanetInSandbox = async (sandboxId, planet_object, name) => {
 
   if (
     typeof velocity !== "object" ||
-    typeof velocity.x !== "number" ||
-    typeof velocity.y !== "number"
+    typeof velocity.x !== "number" || isNaN(velocity.x) ||
+    typeof velocity.y !== "number" || isNaN(velocity.y)
   ) {
     throw "velocity must be an object with valid x and y";
   }

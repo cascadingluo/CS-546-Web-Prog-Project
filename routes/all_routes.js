@@ -7,15 +7,14 @@ import {
   createSandboxForUser,
   removeSandbox,
   updateAllPlanetsInSandbox,
-} from "../data/sandboxes.js";
-// import {renderList} from "../public/js/listForEdit.js"
-import {
   updateSandboxName,
   getSandboxesbyUserId,
   createPlanetInSandbox,
   getSandboxesById,
 } from "../data/sandboxes.js";
+// import {renderList} from "../public/js/listForEdit.js"
 import fs from "fs";
+import helper from  "../helpers.js"
 
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
 import path from "path";
@@ -52,8 +51,8 @@ router
   .post(async (req, res) => {
     try {
       //code here for POST
-      const userId = req.body.login_username;
-      const password = req.body.login_password;
+      const userId = helper.checkString(req.body.login_username, "username");
+      const password = helper.checkString(req.body.login_password, "password");
       const loggedin = await login(userId, password);
       if (!loggedin) {
         return res.status(400).json({ error: "Username or password is incorrect." });
@@ -75,7 +74,7 @@ router
     } catch (e) {
       // res.status(404).json({error: e});
       console.error(e);
-      return res.status(500).json({ error: "Login unsuccessful" });
+      return res.status(500).json({ error: "Login unsuccessful: Either the Username or password is incorrect." });
     }
   });
 
@@ -92,14 +91,14 @@ router
   .post(async (req, res) => {
     try {
       //code here for POST
-      const userId = req.body.create_username;
-      const password = req.body.create_password;
+      const userId = helper.checkIsProperUserName(req.body.create_username, "username");
+      const password = helper.checkIsProperPassword(req.body.create_password, "password");
       const p2 = req.body.rep_pass;
       if (password !== p2) {
         return res.status(400).json({ error: "Passwords do not match." });
       }
-      const age = Number(req.body.age);
-      const email = req.body.email;
+      const age = helper.checkIsProperAge(Number(req.body.age), "Age");
+      const email = helper.checkIsProperEmail(req.body.email, "email");
       const usersCollection = await users();
       const exist = await usersCollection.findOne({ userId: userId.toLowerCase() });
       if (exist) {
@@ -126,6 +125,7 @@ router
       console.error(e);
       res.redirect("/signup");
       return res.status(500).json();
+      //return res.status(404).json({error: e.toString()});
     }
   });
 
