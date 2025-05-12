@@ -171,6 +171,7 @@ router
           "untitled sandbox"
         );
         const sandboxId = newSandbox.sandboxId;
+        req.session.user.sandboxes.push(sandboxId);
         res.redirect(`/edit/${sandboxId}`);
       } catch (error) {
         console.error("error creating sandbox:", error);
