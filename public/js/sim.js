@@ -157,7 +157,6 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch (e) {
       setTimeout(() => {
         editPlanet = false;
-        mouseConstraint.body = null;
       }, 100);
       return;
     }
@@ -169,6 +168,12 @@ window.addEventListener("DOMContentLoaded", () => {
     planet.circleRadius = radius;
     Body.setVelocity(planet, vel);
     planet.render.fillStyle = color;
+
+    // const planet_index = planets.findIndex((p) => {
+    //   return p.label === planet.label;
+    // });
+
+    // planets[planet_index] = planet;
 
     setTimeout(() => {
       editPlanet = false;
