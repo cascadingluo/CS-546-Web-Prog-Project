@@ -7,40 +7,45 @@ await db.dropDatabase();
 
 console.log("Seeding the database...");
 
-let user1;
-try {
-  user1 = await users.register(
-    "testUser1",
-    "testUser1@someEmail.com",
-    21,
-    "testPassword0!"
-  );
-} catch (e) {
-  exitWithFailure(e);
-}
+// User 1
+const user1 = await users.register(
+  "testuser1",
+  "testuser1@someemail.com",
+  21,
+  "testPassword1!"
+);
+const sandbox1 = await sandboxes.createSandboxForUser(
+  user1.user._id,
+  "Test sandbox one"
+);
 
-let sandbox1;
-try {
-  sandbox1 = await sandboxes.createSandboxForUser(
-    user1.user._id,
-    "Test sandbox one"
-  );
-} catch (e) {
-  exitWithFailure(e);
-}
-
-// let planet1;
-// try {
-//   planet1 = await sandboxes.createPlanetInSandbox(sandbox1.sandboxId);
-// } catch (e) {
-//   console.error(e);
-// }
+// User 2
+const user2 = await users.register(
+  "testuser2",
+  "testuser2@someemail.com",
+  23,
+  "testPassword2!"
+);
+const sandbox2 = await sandboxes.createSandboxForUser(
+  user2.user._id,
+  "Test sandbox two"
+);
 
 console.log("Done seeding the database.");
+console.log(`
+Users that have been seeded in the database for testing:
+----------------------------------------------------------
+- username: testuser1
+- email: testuser1@someemail.com
+- age: 21
+- password: testPassword1!
+- sandboxes: Test sandbox one
+----------------------------------------------------------
+- username: testuser2
+- email: testuser2@someemail.com
+- age: 23
+- password: testPassword2!
+- sandboxes: Test sandbox two
+`);
 
 await closeConnection();
-
-function exitWithFailure(errorMsg) {
-  console.error(errorMsg);
-  process.exit(1);
-}

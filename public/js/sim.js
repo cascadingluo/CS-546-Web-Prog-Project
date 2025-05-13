@@ -1,4 +1,4 @@
-const G = 6.6743e-3; 
+const G = 6.6743e-3;
 
 //Common formula for finding perfect orbit velocity
 function orbitVelocity(radius, centralMass) {
@@ -50,7 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
       background: "#000",
     },
   });
-
 
   const planets = [];
 
@@ -130,14 +129,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   Events.on(mouseConstraint, "mousedown", async function (event) {
     if (!mouseConstraint.body) return;
     if (editPlanet) return;
     editPlanet = true;
 
     const planet = mouseConstraint.body;
-    
+
     let name, mass, radius, vel_x, vel_y, vel, mode, color;
     try {
       //https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm
@@ -151,14 +149,17 @@ window.addEventListener("DOMContentLoaded", () => {
       vel_x = prompt("New X Velocity:", planet.velocity.x);
       vel_y = prompt("New Y Velocity:", planet.velocity.y);
       vel = checkIsValidVelocity({ x: vel_x, y: vel_y });
-      mode = confirm("Click ok to make static cancel for dynamic") ? true : false; //i think this returns a booloean but you can never be sure...
+      mode = confirm("Click ok to make static cancel for dynamic")
+        ? true
+        : false; //i think this returns a boolean but you can never be sure...
       color = prompt("New Color Hex:", planet.render.fillStyle);
       color = checkIsValidColor(color);
-    } catch(e) {
-        setTimeout(() => {
-          editPlanet = false;
-        }, 100);
-        return;
+    } catch (e) {
+      setTimeout(() => {
+        editPlanet = false;
+        mouseConstraint.body = null;
+      }, 100);
+      return;
     }
     planet.label = name;
     planet.custom.mass = mass;
@@ -289,7 +290,7 @@ window.addEventListener("DOMContentLoaded", () => {
     mass = checkIsValidMass(mass);
     radius = checkIsValidRadius(radius);
     velocity = checkIsValidVelocity(velocity);
-    // mode = checkIsValidMode(mode); 
+    // mode = checkIsValidMode(mode);
     color = checkIsValidColor(color);
 
     const planet = Bodies.circle(pos.x, pos.y, radius, {
@@ -386,7 +387,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 
 // Check if string is not empty or just space and trims it
 function checkIsValidString(str, argName) {

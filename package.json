@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node seed.js && node tests.js",
+    "test": "node seed.js && node app.js",
     "start": "node app.js",
     "seed": "node seed.js",
     "drop": "node drop.js"
