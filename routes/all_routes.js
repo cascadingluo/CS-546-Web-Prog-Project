@@ -250,33 +250,26 @@ router
   .post(async (req, res) => {
     const sandboxId = req.params.SandboxId;
     try {
-      // const {
-      //   sandboxName,
-      //   planetName,
-      //   x,
-      //   y,
-      //   radius,
-      //   mass,
-      //   velocity,
-      //   isStatic,
-      //   color,
-      // } = req.body;
-
-      // const planet = {
-      //   sandboxName,
-      //   planetName,
-      //   x,
-      //   y,
-      //   radius,
-      //   mass,
-      //   velocity,
-      //   isStatic,
-      //   color,
-      // };
       const { sandboxName, planetsData } = req.body;
-      // TODO: Error check req.body
-      await updateSandboxName(sandboxId, sandboxName);
-      await updateAllPlanetsInSandbox(sandboxId, planetsData);
+      let validated_sandboxName = helper.checkIsProperName(sandboxName, "Sandbox name");
+      const cleaned_sandboxName = xss(validated_sandboxName);
+      const validated_planets = [];
+      for (let planet of planetsData){
+        const validated_planet = validating_planets(planet);
+        validated_planets.push(validated_planet);
+      }
+      const cleaned_planetsData = validated_planets.map((planet) => ({
+        name: xss(planet.name),
+        x: planet.x,
+        y: planet.y,
+        radius: planet.radius,
+        mass: planet.mass,
+        velocity: planet.velocity,
+        isStatic: planet.isStatic,
+        color: xss(planet.color)
+      }))
+      await updateSandboxName(sandboxId, cleaned_sandboxName);
+      await updateAllPlanetsInSandbox(sandboxId, cleaned_planetsData);
       res.json({ message: "Planets saved successfully" });
     } catch (e) {
       console.error("Planets saved unsucessfully:", e);
@@ -362,6 +355,29 @@ async function getSandboxNames(protocol, host, user) {
     });
   } //i also changed this to push instead of append it was giving me an error for append?
   return ret;
+}
+
+function validating_planets(planet){
+  let {name, x, y, radius, mass, isStatic, color, velocity } = planet;
+  name = helper.checkIsProperName(name, "planet");
+  if (typeof x !== "number" || isNaN(x)) throw "Invalid Position x";
+  if (typeof y !== "number" || isNaN(y)) throw "Invalid Position y";
+  if (typeof radius !== "number" || radius <= 0 || isNaN(radius)) throw "Invalid radius: must be a valid number greater than 0";
+  if (typeof mass !== "number" || mass <= 0 || isNaN(mass)) throw "Invalid mass: must be a valid number greater than 0";
+  if (typeof isStatic !== "boolean") throw "isStatic must be of type boolean";
+  if (typeof color !== "string" || !color) throw "color must be a string type";
+  var hexaPattern = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
+  if (!hexaPattern.test(color))
+    throw `Error: ${color} is an invalid hex color code`;
+
+  if (
+    typeof velocity !== "object" ||
+    typeof velocity.x !== "number" || isNaN(velocity.x) ||
+    typeof velocity.y !== "number" || isNaN(velocity.y)
+  ){
+    throw "velocity must be an object with valid x and y";
+  }
+  return {name, x, y, radius, mass, isStatic, color, velocity};
 }
 
 export default router;
