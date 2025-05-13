@@ -1,4 +1,4 @@
-const G = 6.6743e-3; 
+const G = 6.6743e-3;
 
 //Common formula for finding perfect orbit velocity
 function orbitVelocity(radius, centralMass) {
@@ -50,7 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
       background: "#000",
     },
   });
-
 
   const planets = [];
 
@@ -130,14 +129,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   Events.on(mouseConstraint, "mousedown", async function (event) {
     // if (!mouseConstraint.body) return;
     let clickedBody = event.source.body;
     if (!clickedBody || !clickedBody.custom) return;
     if (editPlanet) return;
 
-    //i think the issue with the planets came from the fact that the bounds for the planet got fucked after editing and dueing sim. 
+    //i think the issue with the planets came from the fact that the bounds for the planet got fucked after editing and dueing sim.
     // this should force it to check by visuals its kinda stupid but this is the cleanest way i can fix it i think
     const mousePos = event.mouse.position;
     const bounds = clickedBody.bounds;
@@ -146,8 +144,8 @@ window.addEventListener("DOMContentLoaded", () => {
       mousePos.x < bounds.min.x ||
       mousePos.x > bounds.max.x ||
       mousePos.y < bounds.min.y ||
-      mousePos.y > bounds.max.y ) 
-    {
+      mousePos.y > bounds.max.y
+    ) {
       return;
     }
     editPlanet = true;
@@ -168,7 +166,9 @@ window.addEventListener("DOMContentLoaded", () => {
       let vel_x = prompt("New X Velocity:", clickedBody.velocity.x);
       let vel_y = prompt("New Y Velocity:", clickedBody.velocity.y);
       let vel = checkIsValidVelocity({ x: vel_x, y: vel_y });
-      let mode = confirm("Click ok to make static cancel for dynamic") ? true : false; //i think this returns a booloean but you can never be sure...
+      let mode = confirm("Click ok to make static cancel for dynamic")
+        ? true
+        : false; //i think this returns a booloean but you can never be sure...
       let color = prompt("New Color Hex:", clickedBody.render.fillStyle);
       color = checkIsValidColor(color);
 
@@ -181,16 +181,14 @@ window.addEventListener("DOMContentLoaded", () => {
       clickedBody.circleRadius = radius;
       Body.setVelocity(clickedBody, vel);
       clickedBody.render.fillStyle = color;
-
-    } catch(e) {
-        // setTimeout(() => {
-        //   editPlanet = false;
-        //   clickedBody = null;
-        // }, 100);
-        // console.log("somethings wrong bro");
-        error.hidden = false;
-        error.innerHTML = "failed to save planets";
-
+    } catch (e) {
+      // setTimeout(() => {
+      //   editPlanet = false;
+      //   clickedBody = null;
+      // }, 100);
+      // console.log("somethings wrong bro");
+      error.hidden = false;
+      error.innerHTML = "failed to save planets";
     }
     setTimeout(() => {
       editPlanet = false;
@@ -198,9 +196,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // Events.on(mouseConstraint, "mouseup", function () {
-  //   mouseConstraint.body = null; 
+  //   mouseConstraint.body = null;
   // });
-  
 
   Events.on(engine, "beforeUpdate", function (event) {
     let netForces = planets.map(() => ({ x: 0, y: 0 }));
@@ -317,7 +314,7 @@ window.addEventListener("DOMContentLoaded", () => {
     mass = checkIsValidMass(mass);
     radius = checkIsValidRadius(radius);
     velocity = checkIsValidVelocity(velocity);
-    // mode = checkIsValidMode(mode); 
+    // mode = checkIsValidMode(mode);
     color = checkIsValidColor(color);
 
     const planet = Bodies.circle(pos.x, pos.y, radius, {
@@ -414,7 +411,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 
 // Check if string is not empty or just space and trims it
 function checkIsValidString(str, argName) {
