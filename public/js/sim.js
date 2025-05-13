@@ -132,47 +132,75 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
   Events.on(mouseConstraint, "mousedown", async function (event) {
-    if (!mouseConstraint.body) return;
+    // if (!mouseConstraint.body) return;
+    let clickedBody = event.source.body;
+    if (!clickedBody || !clickedBody.custom) return;
     if (editPlanet) return;
-    editPlanet = true;
 
-    const planet = mouseConstraint.body;
-    
-    let name, mass, radius, vel_x, vel_y, vel, mode, color;
+    //i think the issue with the planets came from the fact that the bounds for the planet got fucked after editing and dueing sim. 
+    // this should force it to check by visuals its kinda stupid but this is the cleanest way i can fix it i think
+    const mousePos = event.mouse.position;
+    const bounds = clickedBody.bounds;
+
+    if (
+      mousePos.x < bounds.min.x ||
+      mousePos.x > bounds.max.x ||
+      mousePos.y < bounds.min.y ||
+      mousePos.y > bounds.max.y ) 
+    {
+      return;
+    }
+    editPlanet = true;
+    // let name, mass, radius, vel_x, vel_y, vel, mode, color;
+
     try {
       //https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm
       //https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt
-      name = prompt("New Name:", planet.label);
-      name = checkIsValidName(name);
-      mass = prompt("New Mass:", planet.custom.mass);
-      mass = checkIsValidMass(mass);
-      radius = prompt("New Radius:", planet.circleRadius);
-      radius = checkIsValidRadius(radius);
-      vel_x = prompt("New X Velocity:", planet.velocity.x);
-      vel_y = prompt("New Y Velocity:", planet.velocity.y);
-      vel = checkIsValidVelocity({ x: vel_x, y: vel_y });
-      mode = confirm("Click ok to make static cancel for dynamic") ? true : false; //i think this returns a booloean but you can never be sure...
-      color = prompt("New Color Hex:", planet.render.fillStyle);
-      color = checkIsValidColor(color);
-    } catch(e) {
-        setTimeout(() => {
-          editPlanet = false;
-        }, 100);
-        return;
-    }
-    planet.label = name;
-    planet.custom.mass = mass;
-    Body.setMass(planet, mass);
-    planet.custom.isStatic = mode;
-    planet.isStatic = mode;
-    planet.circleRadius = radius;
-    Body.setVelocity(planet, vel);
-    planet.render.fillStyle = color;
 
+      // const planet = mouseConstraint.body;
+
+      let name = prompt("New Name:", clickedBody.label);
+      name = checkIsValidName(name);
+      let mass = prompt("New Mass:", clickedBody.custom.mass);
+      mass = checkIsValidMass(mass);
+      let radius = prompt("New Radius:", clickedBody.circleRadius);
+      radius = checkIsValidRadius(radius);
+      let vel_x = prompt("New X Velocity:", clickedBody.velocity.x);
+      let vel_y = prompt("New Y Velocity:", clickedBody.velocity.y);
+      let vel = checkIsValidVelocity({ x: vel_x, y: vel_y });
+      let mode = confirm("Click ok to make static cancel for dynamic") ? true : false; //i think this returns a booloean but you can never be sure...
+      let color = prompt("New Color Hex:", clickedBody.render.fillStyle);
+      color = checkIsValidColor(color);
+
+      //i moved this chunck inwards cuz i think this was causing some isseus
+      clickedBody.label = name;
+      clickedBody.custom.mass = mass;
+      Body.setMass(clickedBody, mass);
+      clickedBody.custom.isStatic = mode;
+      clickedBody.isStatic = mode;
+      clickedBody.circleRadius = radius;
+      Body.setVelocity(clickedBody, vel);
+      clickedBody.render.fillStyle = color;
+
+    } catch(e) {
+        // setTimeout(() => {
+        //   editPlanet = false;
+        //   clickedBody = null;
+        // }, 100);
+        // console.log("somethings wrong bro");
+        error.hidden = false;
+        error.innerHTML = "failed to save planets";
+
+    }
     setTimeout(() => {
       editPlanet = false;
     }, 100);
   });
+
+  // Events.on(mouseConstraint, "mouseup", function () {
+  //   mouseConstraint.body = null; 
+  // });
+  
 
   Events.on(engine, "beforeUpdate", function (event) {
     let netForces = planets.map(() => ({ x: 0, y: 0 }));
