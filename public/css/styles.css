@@ -64,18 +64,18 @@ hr{
    border: 1px solid  #FFFD93; 
 }
 /* gallery views */
-.galButtons{
+/* .galButtons{
     display: flex;
     gap: 10px;
     margin: 5px 0;
-}
+} */
 
 #galBtn {
-    min-width: 80px;
+    min-width: 60px;
     margin: 5px 5px 5px 0;
     cursor: pointer;
     background-color: #BCC8FA;
-    padding: 1% 2%;
+    padding: 1% 1%;
     color: #3C1478;
     border: none;
     text-align: center;
