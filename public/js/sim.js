@@ -178,7 +178,9 @@ window.addEventListener("DOMContentLoaded", () => {
       Body.setMass(clickedBody, mass);
       clickedBody.custom.isStatic = mode;
       clickedBody.isStatic = mode;
-      clickedBody.circleRadius = radius;
+      const scale = radius / clickedBody.circleRadius;
+      // clickedBody.circleRadius = radius;
+      Body.scale(clickedBody, scale, scale);
       Body.setVelocity(clickedBody, vel);
       clickedBody.render.fillStyle = color;
     } catch (e) {
