@@ -34,7 +34,7 @@ Inside a sandbox, you can place planets by clicking on the canvas after giving t
 
 If you're logged in, you can choose to either `Create New Sandbox` or `View Sandboxes`. On the view page, you can choose to `Edit`, `View`, or `Delete` any of your existing sandboxes. You can also share a viewing link to anyone you'd like. When editing a sandbox, you can also share the URL to other users that are logged in; they will receive a copy of the sandbox that they can edit freely.
 
-## Development timeline
+## Development timeline and summarized meeting notes
 
 _week 1 of development:_
 
@@ -47,3 +47,22 @@ _week 2.5 of development:_
 - backends (physics sim + db) will be merged before next meeting (zach, nick, annanya)
 - frontends will be merged before the next meeting (luo, simran)
 - the front and back will be merged during the week 3 meeting
+
+_week 3 of development:_
+
+- merging didnt happen as anticipated :(
+- backend will meet and merge to avoid problems, many questions and uncertatinty in the sturcture and functionalities
+- frontend will meet to finalize the css stylings and start implementation along with complete routings
+
+_week 4 of development:_ 
+
+- complete merging and intergration completed! further plans to refine the website
+- start working on loading the simulation in the sandbox, creating sandboxes, and editing sandboxes
+- will aim to complete everying by the weekend of may 10 - 11
+
+_week 5 of development:_ 
+
+- majority of the product has been completed, core functionalities are working expectantly and unexpectantly...
+- breaking and debugging phrase for small issues, implementing AJAX to logins and signup, implementing xxs defense, seeding script creation
+- finalizing development
+- recording the final product and refinments for submission :)
