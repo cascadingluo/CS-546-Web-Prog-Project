@@ -4,7 +4,7 @@ This is the repository for Group 22's CS 546 final project, Cosmic Canvas. The t
 
 ## Getting started
 
-To seed the database with initial test data, you can use `npm run seed` followed by `npm start` to start the server. Alternatively, just run the test command:
+Run `npm i` to install dependencies. To seed the database with initial test data, you can use `npm run seed` followed by `npm start` to start the server. Alternatively, just run the test command:
 
 ```bash
 npm run test
