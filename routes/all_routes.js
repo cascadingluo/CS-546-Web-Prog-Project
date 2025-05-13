@@ -15,6 +15,7 @@ import {
 // import {renderList} from "../public/js/listForEdit.js"
 import fs from "fs";
 import helper from  "../helpers.js"
+import xss from "xss";
 
 //https://stackoverflow.com/questions/75004188/what-does-fileurltopathimport-meta-url-do
 import path from "path";
@@ -51,8 +52,13 @@ router
   .post(async (req, res) => {
     try {
       //code here for POST
-      const userId = helper.checkString(req.body.login_username, "username");
-      const password = helper.checkString(req.body.login_password, "password");
+      let input = req.body;
+      for (let k in input){
+        input[k] = xss(input[k]);
+      }
+
+      const userId = helper.checkString(input.login_username, "username");
+      const password = helper.checkString(input.login_password, "password");
       const loggedin = await login(userId, password);
       if (!loggedin) {
         return res.status(400).json({ error: "Username or password is incorrect." });
@@ -91,14 +97,18 @@ router
   .post(async (req, res) => {
     try {
       //code here for POST
-      const userId = helper.checkIsProperUserName(req.body.create_username, "username");
-      const password = helper.checkIsProperPassword(req.body.create_password, "password");
-      const p2 = req.body.rep_pass;
+      let input = req.body;
+      for (let k in input){
+        input[k] = xss(input[k]);
+      }
+      const userId = helper.checkIsProperUserName(input.create_username, "username");
+      const password = helper.checkIsProperPassword(input.create_password, "password");
+      const p2 = input.rep_pass;
       if (password !== p2) {
         return res.status(400).json({ error: "Passwords do not match." });
       }
-      const age = helper.checkIsProperAge(Number(req.body.age), "Age");
-      const email = helper.checkIsProperEmail(req.body.email, "email");
+      const age = helper.checkIsProperAge(Number(input.age), "Age");
+      const email = helper.checkIsProperEmail(input.email, "email");
       const usersCollection = await users();
       const exist = await usersCollection.findOne({ userId: userId.toLowerCase() });
       if (exist) {
