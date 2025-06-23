@@ -1,5 +1,7 @@
 # Cosmic Canvas
 
+![image](https://github.com/user-attachments/assets/2e8789af-1ebb-454a-a900-b9f1a7efc272)
+
 This is the repository for Group 22's CS 546 final project, Cosmic Canvas. The team consists of Luo Xu (cascadingluo), Nicolas Banatt (PsioNicolas), Annanya Jain (JainAnnanya), Gursimran Vasir (gvasir), and Zachary Rosario (zachjesus).
 
 ## Getting started
